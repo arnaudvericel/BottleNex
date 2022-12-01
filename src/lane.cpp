@@ -1,27 +1,55 @@
 #include "../include/lane.h"
 #include "../include/vehicle.h"
 
-using namespace std;
-
-
 Lane::Lane()
 {
-    maxSpeed = 130.;
-    lengthKm = 2.;
+    maxAllowedSpeed = 130.;
+    length = 2.;
 }
 
-Lane::Lane(float maxspeed, float lengthkm) : maxSpeed(maxspeed), lengthKm(lengthkm) {}
+Lane::Lane(float maxspeed, float lengthm) : maxAllowedSpeed(maxspeed), length(lengthm) 
+{
 
-vector<Vehicle*> Lane::GetVehiclesOnLane() const { return vehicles; }
+}
+
+std::vector<Vehicle*> Lane::GetVehiclesOnLane() const 
+{ 
+    return vehicles;
+}
+
+int Lane::FindInsertPosition(const Vehicle* otherVehicle, float crossingPosition)
+{
+    // TODO
+    return 0;
+}
+
+std::vector<Vehicle*>::iterator Lane::FindVehicleIndex(const Vehicle* vehicleToFind)
+{
+    for(auto it = begin(vehicles); it != end(vehicles); ++it)
+    {
+        if (*it == vehicleToFind)
+        {
+            return it;
+        }
+    }
+}
 
 void Lane::RemoveVehicle(Vehicle* vehicle)
 {
-    // todo
+    std::vector<Vehicle*>::iterator vehicleIndex = FindVehicleIndex(vehicle);
+    // todo : remove link to previous vehicle?
+    this->vehicles.erase(vehicleIndex);
+    delete vehicle;
 }
 
 void Lane::InsertVehicle(Vehicle* newVehicle)
 {
     this->vehicles.push_back(newVehicle);
+    newVehicle->SetLane(this);
+    newVehicle->SetForwardVehicle(nullptr);
+
+    LinkFollowingVehicle(newVehicle);
+    
 }
 
 void Lane::InsertVehicle(Vehicle* newVehicle, const float position)
@@ -29,12 +57,23 @@ void Lane::InsertVehicle(Vehicle* newVehicle, const float position)
     // todo
 }
 
-float Lane::GetMaxSpeed() const 
+void Lane::LinkFollowingVehicle(Vehicle* vehicle)
 {
-    return maxSpeed;
+    std::vector<Vehicle*>::iterator posInLane = FindVehicleIndex(vehicle);
+    int index = std::distance(vehicles.begin(), posInLane);
+
+    if (index > 0)
+    {
+        vehicles[index - 1]->SetForwardVehicle(vehicle);
+    }
 }
 
-float Lane::GetLengthKm() const
+float Lane::GetMaxAllowedSpeed() const 
 {
-    return lengthKm;
+    return maxAllowedSpeed;
+}
+
+float Lane::GetLength() const
+{
+    return length;
 }

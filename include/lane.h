@@ -5,30 +5,32 @@
 
 class Vehicle;
 
-using namespace std;
-
 class Lane
 {
 private:
-    float maxSpeed;
-    float lengthKm;
+    float maxAllowedSpeed;
+    float length;
 
-    vector<Vehicle*> vehicles;
+    std::vector<Vehicle*> vehicles;
 
 private:
-    void RemoveVehicle(Vehicle*);
+    int FindInsertPosition(const Vehicle*, float);
+    std::vector<Vehicle*>::iterator FindVehicleIndex(const Vehicle*);
 
 public:
     Lane();
     Lane(float, float);
     ~Lane() = default;
 
+    void RemoveVehicle(Vehicle*);
     void InsertVehicle(Vehicle*);
     void InsertVehicle(Vehicle*, const float);
 
-    vector<Vehicle*> GetVehiclesOnLane() const;
-    float GetMaxSpeed() const;
-    float GetLengthKm() const;
+    void LinkFollowingVehicle(Vehicle*);
+
+    std::vector<Vehicle*> GetVehiclesOnLane() const;
+    float GetMaxAllowedSpeed() const;
+    float GetLength() const;
 };
 
 #endif
