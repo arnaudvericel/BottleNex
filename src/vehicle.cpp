@@ -4,19 +4,86 @@
 
 Vehicle::Vehicle()
 {
-    // todo
+    motionState = Motion::Cruising;
+    distanceInLane = 0.;
+    // todo : current speed
 }
 
-Vehicle::Vehicle(float len, float maxspeed, float maxaccel) : length(len), maxSpeed(maxspeed), maxAcceleration(maxaccel) {}
+Vehicle::Vehicle(float len, float maxspeed, float maxaccel) : length(len), maxSpeed(maxspeed), maxAcceleration(maxaccel) 
+{
+    Vehicle();
+}
 
-float Vehicle::GetLength() const { return length; }
+float Vehicle::GetLength() const
+{ 
+    return length; 
+}
 
-float Vehicle::GetMaxSpeed() const { return maxSpeed; }
+float Vehicle::GetCurrentSpeed() const 
+{ 
+    return currentSpeed;
+}
 
-float Vehicle::GetMaxAcceleration() const { return maxAcceleration; }
+float Vehicle::GetMaxSpeed() const 
+{ 
+    return maxSpeed; 
+}
 
-void Vehicle::Move() { cout << "I am moving virtually" << endl; }
+float Vehicle::GetMaxAcceleration() const 
+{ 
+    return maxAcceleration; 
+}
 
-Lane* Vehicle::GetLane() const { return lane; }
+void Vehicle::SetLane(Lane* newLane) 
+{
+    lane = newLane; 
+}
 
-int Vehicle::GetPositionInLane() const { return positionInLane; }
+Lane* Vehicle::GetLane() const 
+{ 
+    return lane; 
+}
+
+float Vehicle::GetDistanceInLane() const 
+{ 
+    return distanceInLane; 
+}
+
+void Vehicle::SetForwardVehicle(Vehicle* vehicle)
+{
+    forwardVehicle = vehicle;
+}
+
+Vehicle* Vehicle::GetForwardVehicle() const
+{
+    return forwardVehicle;
+}
+
+void Vehicle::Move(float deltaTime)
+{
+    switch (motionState)
+    {
+    case Motion::Stopped:
+        break;
+
+    case Motion::Braking:
+        /* code */
+        break;
+    
+    case Motion::Cruising:
+        /* code */
+        break;
+
+    case Motion::Accelerating:
+        /* code */
+        break;
+    
+    default:
+        break;
+    }
+    
+    if (distanceInLane > lane->GetLength())
+    {
+        lane->RemoveVehicle(this);
+    }
+}

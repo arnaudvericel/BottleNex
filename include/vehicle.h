@@ -3,30 +3,51 @@
 
 using namespace std;
 
+enum Motion
+{
+    Stopped = 0,
+    Braking,
+    Cruising,
+    Accelerating
+};
+
 class Lane;
 
 class Vehicle
 {
 private:
+    // characteristics
     float length;
     float maxSpeed;
     float maxAcceleration; // km/h/s
+
+    // evolution-related
+    float currentSpeed;
+    float distanceInLane;
+
+    Motion motionState;
+
     Lane* lane;
-    int positionInLane;
+    Vehicle* forwardVehicle;
 
 public:
     Vehicle();
     Vehicle(float, float, float);
-    ~Vehicle() = default;
+    virtual ~Vehicle() = default;
 
     float GetLength() const;
+    float GetCurrentSpeed() const;
+    float GetDistanceInLane() const;
     float GetMaxSpeed() const;
     float GetMaxAcceleration() const;
 
-    virtual void Move() = 0;
+    virtual void Move(float);
 
+    void SetLane(Lane*);
     Lane* GetLane() const;
-    int GetPositionInLane() const;
+
+    void SetForwardVehicle(Vehicle*);
+    Vehicle* GetForwardVehicle() const;
 };
 
 #endif
