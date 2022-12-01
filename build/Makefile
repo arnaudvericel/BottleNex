@@ -6,8 +6,8 @@ IDIR = ../include
 
 ###################################
 
-bottlenex: bottlenex.o vehicle.o lane.o car.o
-	$(CC) $(FLAGS) -o bottlenex bottlenex.o vehicle.o lane.o car.o
+bottlenex: bottlenex.o vehicle.o lane.o car.o road.o
+	$(CC) $(FLAGS) -o bottlenex bottlenex.o vehicle.o lane.o car.o road.o
 
 vehicle.o: $(SDIR)/vehicle.cpp $(IDIR)/vehicle.h
 	$(CC) $(FLAGS) -o vehicle.o -c $(SDIR)/vehicle.cpp
@@ -20,6 +20,9 @@ car.o: $(SDIR)/car.cpp $(IDIR)/car.h
 
 bottlenex.o:
 	$(CC) $(FLAGS) -o bottlenex.o -c $(SDIR)/bottlenex.cpp
+
+road.o: $(SDIR)/road.cpp $(IDIR)/road.h
+	$(CC) $(FLAGS) -o road.o -c $(SDIR)/road.cpp
 
 ###################################
 
