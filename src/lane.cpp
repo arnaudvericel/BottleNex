@@ -44,7 +44,7 @@ void Lane::RemoveVehicle(Vehicle* vehicle)
 
 void Lane::InsertVehicle(Vehicle* newVehicle)
 {
-    this->vehicles.push_back(newVehicle);
+    vehicles.push_back(newVehicle);
     newVehicle->SetLane(this);
     newVehicle->SetForwardVehicle(nullptr);
 
