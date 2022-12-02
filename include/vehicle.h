@@ -15,6 +15,9 @@ class Lane;
 
 class Vehicle
 {
+public:
+    static int nbActiveVehicles;
+
 private:
     // characteristics
     float length;
@@ -33,7 +36,7 @@ private:
 public:
     Vehicle();
     Vehicle(float, float, float);
-    virtual ~Vehicle() = default;
+    virtual ~Vehicle();
 
     float GetLength() const;
     float GetCurrentSpeed() const;

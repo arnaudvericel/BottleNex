@@ -2,11 +2,19 @@
 #include "../include/vehicle.h"
 #include "../include/lane.h"
 
+int Vehicle::nbActiveVehicles = 0;
+
 Vehicle::Vehicle()
 {
     motionState = Motion::Cruising;
     distanceInLane = 0.;
     // todo : current speed
+    nbActiveVehicles++;
+}
+
+Vehicle::~Vehicle()
+{
+    nbActiveVehicles--;
 }
 
 Vehicle::Vehicle(float len, float maxspeed, float maxaccel) : length(len), maxSpeed(maxspeed), maxAcceleration(maxaccel) 
