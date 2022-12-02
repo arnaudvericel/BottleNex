@@ -10,9 +10,11 @@ public:
     constexpr static float MaxAcceleration = 5.;
     constexpr static float Length = 5.;
 
+    static int nbActiveCars;
+
 public:
     Car();
-    ~Car() = default;
+    ~Car();
 };
 
 #endif
