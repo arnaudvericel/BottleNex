@@ -3,34 +3,44 @@
 
 #include <vector>
 
+#include "writer.h"
+
 class Vehicle;
 
 class Lane
 {
+public:
+    static int counter;
+
 private:
     float maxAllowedSpeed;
     float length;
+    int id;
+    Writer writer = Writer();
 
     std::vector<Vehicle*> vehicles;
 
 private:
-    int FindInsertPosition(const Vehicle*, float);
-    std::vector<Vehicle*>::iterator FindVehicleIndex(const Vehicle*);
+    int FindInsertIndex(const Vehicle*, float);
+    int FindVehicleIndex(const Vehicle*);
+    std::vector<Vehicle*>::iterator FindVehicleIterIndex(const Vehicle*);
+    void UpdateVehiclesLinklist();
 
 public:
     Lane();
     Lane(float, float);
-    ~Lane() = default;
+    ~Lane();
 
     void RemoveVehicle(Vehicle*);
     void InsertVehicle(Vehicle*);
     void InsertVehicle(Vehicle*, const float);
-
-    void LinkFollowingVehicle(Vehicle*);
+    void WriteStep(const float);
 
     std::vector<Vehicle*> GetVehiclesOnLane() const;
+    int GetNbVehiclesOnLane() const;
     float GetMaxAllowedSpeed() const;
     float GetLength() const;
+    int GetId() const;
 };
 
 #endif

@@ -1,15 +1,34 @@
+#include <sstream>
+#include <iomanip>
+#include <fstream>
+
 #include "../include/lane.h"
 #include "../include/vehicle.h"
+#include "../include/utils.h"
+#include "../include/car.h"
+
+int Lane::counter = 0;
 
 Lane::Lane()
 {
     maxAllowedSpeed = 130.;
-    length = 2.;
+    length = 2000.; // m
+    id = ++counter;
+    writer.Init(this);
 }
 
-Lane::Lane(float maxspeed, float lengthm) : maxAllowedSpeed(maxspeed), length(lengthm) 
+Lane::Lane(float maxspeed, float lengthm) : Lane()
 {
+    maxAllowedSpeed = maxspeed;
+    length = lengthm; 
+}
 
+Lane::~Lane()
+{
+    for (Vehicle* vehicle : vehicles)
+    {
+        delete vehicle;
+    }
 }
 
 std::vector<Vehicle*> Lane::GetVehiclesOnLane() const 
@@ -17,15 +36,31 @@ std::vector<Vehicle*> Lane::GetVehiclesOnLane() const
     return vehicles;
 }
 
-int Lane::FindInsertPosition(const Vehicle* otherVehicle, float crossingPosition)
+int Lane::GetNbVehiclesOnLane() const
+{
+    return vehicles.size();
+}
+
+int Lane::FindInsertIndex(const Vehicle* otherVehicle, float crossingPosition)
 {
     // TODO
     return 0;
 }
 
-std::vector<Vehicle*>::iterator Lane::FindVehicleIndex(const Vehicle* vehicleToFind)
+int Lane::FindVehicleIndex(const Vehicle* vehicleToFind)
 {
-    for(auto it = begin(vehicles); it != end(vehicles); ++it)
+    for(std::vector<Vehicle*>::iterator it = begin(vehicles); it != end(vehicles); ++it)
+    {
+        if (*it == vehicleToFind)
+        {
+            return std::distance(vehicles.begin(), it);
+        }
+    }
+}
+
+std::vector<Vehicle*>::iterator Lane::FindVehicleIterIndex(const Vehicle* vehicleToFind)
+{
+    for(std::vector<Vehicle*>::iterator it = begin(vehicles); it != end(vehicles); ++it)
     {
         if (*it == vehicleToFind)
         {
@@ -36,9 +71,8 @@ std::vector<Vehicle*>::iterator Lane::FindVehicleIndex(const Vehicle* vehicleToF
 
 void Lane::RemoveVehicle(Vehicle* vehicle)
 {
-    std::vector<Vehicle*>::iterator vehicleIndex = FindVehicleIndex(vehicle);
-    // todo : remove link to previous vehicle?
-    this->vehicles.erase(vehicleIndex);
+    auto vehicleIterIndex = FindVehicleIterIndex(vehicle);
+    this->vehicles.erase(vehicleIterIndex);
     delete vehicle;
 }
 
@@ -48,7 +82,7 @@ void Lane::InsertVehicle(Vehicle* newVehicle)
     newVehicle->SetLane(this);
     newVehicle->SetForwardVehicle(nullptr);
 
-    LinkFollowingVehicle(newVehicle);
+    UpdateVehiclesLinklist();
     
 }
 
@@ -57,14 +91,19 @@ void Lane::InsertVehicle(Vehicle* newVehicle, const float position)
     // todo
 }
 
-void Lane::LinkFollowingVehicle(Vehicle* vehicle)
+void Lane::UpdateVehiclesLinklist()
 {
-    std::vector<Vehicle*>::iterator posInLane = FindVehicleIndex(vehicle);
-    int index = std::distance(vehicles.begin(), posInLane);
-
-    if (index > 0)
+    for (int i=0; i<vehicles.size(); i++)
     {
-        vehicles[index - 1]->SetForwardVehicle(vehicle);
+        if (i != 0)
+        {
+            vehicles[i]->SetForwardVehicle(vehicles[i-1]);
+        }
+        else
+        {
+            // first vehicle in lane does not have a forward vehicle
+            vehicles[i]->SetForwardVehicle(nullptr);
+        }
     }
 }
 
@@ -76,4 +115,14 @@ float Lane::GetMaxAllowedSpeed() const
 float Lane::GetLength() const
 {
     return length;
+}
+
+int Lane::GetId() const
+{
+    return id;
+}
+
+void Lane::WriteStep(const float time)
+{
+    writer.WriteStep(time);
 }

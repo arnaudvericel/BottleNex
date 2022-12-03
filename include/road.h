@@ -10,13 +10,20 @@ class Lane;
 class Road
 {
 private:
+    float currentTime;
+    float deltaTime;
+    float maxTime;
     vector<Lane*> lanes;
 
-public:
-    Road();
-    Road(int);
-    ~Road() = default;
+    bool CanSpawnVehicle(Lane*);
+    void SpawnVehicles();
+    bool IsDumpTimeStep() const;
 
+public:
+    Road(int);
+    ~Road();
+
+    void Evolve();
     vector<Lane*> GetLanes() const;
 };
 
