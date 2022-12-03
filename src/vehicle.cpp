@@ -3,23 +3,26 @@
 #include "../include/lane.h"
 
 int Vehicle::nbActiveVehicles = 0;
-
-Vehicle::Vehicle()
-{
-    motionState = Motion::Cruising;
-    distanceInLane = 0.;
-    // todo : current speed
-    nbActiveVehicles++;
-}
+int Vehicle::counter = 0;
 
 Vehicle::~Vehicle()
 {
     nbActiveVehicles--;
 }
 
-Vehicle::Vehicle(float len, float maxspeed, float maxaccel) : length(len), maxSpeed(maxspeed), maxAcceleration(maxaccel) 
+Vehicle::Vehicle(float len, float maxspeed, float accel)
 {
-    Vehicle();
+    // characteristics
+    length = len;
+    maxVelocity = maxspeed;
+    acceleration = accel;
+    id = ++counter;
+
+    // dynamic state init
+    motionState = Motion::Accelerating;
+    distanceInLane = 0.;
+    currentVelocity = maxVelocity/2.;
+    nbActiveVehicles++;
 }
 
 float Vehicle::GetLength() const
@@ -27,19 +30,19 @@ float Vehicle::GetLength() const
     return length; 
 }
 
-float Vehicle::GetCurrentSpeed() const 
+float Vehicle::GetCurrentVelocity() const 
 { 
-    return currentSpeed;
+    return currentVelocity;
 }
 
-float Vehicle::GetMaxSpeed() const 
+float Vehicle::GetMaxVelocity() const 
 { 
-    return maxSpeed; 
+    return maxVelocity; 
 }
 
-float Vehicle::GetMaxAcceleration() const 
+float Vehicle::GetAcceleration() const 
 { 
-    return maxAcceleration; 
+    return acceleration;
 }
 
 void Vehicle::SetLane(Lane* newLane) 
@@ -67,23 +70,32 @@ Vehicle* Vehicle::GetForwardVehicle() const
     return forwardVehicle;
 }
 
-void Vehicle::Move(float deltaTime)
+int Vehicle::GetId() const
 {
+    return id;
+}
+
+void Vehicle::UpdatePosition(const float deltaTime)
+{
+    distanceInLane += currentVelocity * deltaTime;
+}
+
+void Vehicle::Move(const float deltaTime)
+{
+    EvaluateMotionState(deltaTime);
+
     switch (motionState)
     {
-    case Motion::Stopped:
-        break;
-
     case Motion::Braking:
-        /* code */
+        Brake(deltaTime);
         break;
     
     case Motion::Cruising:
-        /* code */
+        Cruise(deltaTime);
         break;
 
     case Motion::Accelerating:
-        /* code */
+        Accelerate(deltaTime);
         break;
     
     default:

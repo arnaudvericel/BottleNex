@@ -1,15 +1,9 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
-using namespace std;
+#include "enums.h"
 
-enum Motion
-{
-    Stopped = 0,
-    Braking,
-    Cruising,
-    Accelerating
-};
+using namespace std;
 
 class Lane;
 
@@ -17,15 +11,17 @@ class Vehicle
 {
 public:
     static int nbActiveVehicles;
+    static int counter;
 
-private:
+protected:
     // characteristics
+    int id;
     float length;
-    float maxSpeed;
-    float maxAcceleration; // km/h/s
+    float maxVelocity;
+    float acceleration; // km/h/s
 
     // evolution-related
-    float currentSpeed;
+    float currentVelocity;
     float distanceInLane;
 
     Motion motionState;
@@ -33,24 +29,31 @@ private:
     Lane* lane;
     Vehicle* forwardVehicle;
 
+    // methods
+    virtual void Brake(const float) = 0;
+    virtual void Cruise(const float) = 0;
+    virtual void Accelerate(const float) = 0;
+    virtual void EvaluateMotionState(const float) = 0;
+
 public:
-    Vehicle();
     Vehicle(float, float, float);
     virtual ~Vehicle();
 
     float GetLength() const;
-    float GetCurrentSpeed() const;
+    float GetCurrentVelocity() const;
     float GetDistanceInLane() const;
-    float GetMaxSpeed() const;
-    float GetMaxAcceleration() const;
+    float GetMaxVelocity() const;
+    float GetAcceleration() const;
 
-    virtual void Move(float);
+    void UpdatePosition(const float);
+    void Move(const float);
 
     void SetLane(Lane*);
     Lane* GetLane() const;
 
     void SetForwardVehicle(Vehicle*);
     Vehicle* GetForwardVehicle() const;
+    int GetId() const;
 };
 
 #endif
