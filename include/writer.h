@@ -8,11 +8,17 @@ class Lane;
 class Writer
 {
 private:
+    int vehiclesBraking;
+    int vehiclesAccelerating;
+    int vehiclesCruising;
+
     Lane* lane;
     std::string fileName;
     void SetFilename();
     void DeleteFile();
 
+    void InitVehiclesStats();
+    void FetchVehiclesStats();
     float GetMeanDensity() const;
     float GetMeanDistance() const;
     float GetMeanVelocity() const;

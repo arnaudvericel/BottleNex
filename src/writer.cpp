@@ -7,10 +7,11 @@
 #include "../include/lane.h"
 #include "../include/car.h"
 #include "../include/utils.h"
+#include "../include/enums.h"
 
 Writer::Writer()
 {
-
+    InitVehiclesStats();
 }
 
 void Writer::Init(Lane* myLane)
@@ -37,12 +38,50 @@ void Writer::SetFilename()
     fileName = "lane_" + strId.str() + ".dat";
 }
 
+void Writer::InitVehiclesStats()
+{
+    vehiclesAccelerating = 0;
+    vehiclesBraking = 0;
+    vehiclesCruising = 0;
+}
+
+void Writer::FetchVehiclesStats()
+{
+    InitVehiclesStats();
+    
+    for (Vehicle* vehicle : lane->GetVehiclesOnLane())
+    {
+        if (vehicle != nullptr)
+        {
+            switch (vehicle->GetMotionState())
+            {
+                case Motion::Accelerating:
+                    vehiclesAccelerating++;
+                    break;
+                
+                case Motion::Cruising:
+                    vehiclesCruising++;
+                    break;
+
+                case Motion::Braking:
+                    vehiclesBraking++;
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    }
+}
+
 void Writer::WriteStep(const float time)
 {
     if (!fileExists(fileName))
     {
         WriteHeader();
     }
+
+    FetchVehiclesStats();
 
     std::fstream out;
     out.open(fileName, std::ios::out | std::ios::app);
@@ -52,6 +91,9 @@ void Writer::WriteStep(const float time)
     AddColumn(out, 30, 8, GetMeanVelocity());
     AddColumn(out, 30, 8, GetMeanDistance());
     AddColumn(out, 40, 8, GetMeanDensity());
+    AddColumn(out, 30, 8, vehiclesCruising);
+    AddColumn(out, 30, 8, vehiclesAccelerating);
+    AddColumn(out, 30, 8, vehiclesBraking);
     out << std::endl;
     out.close();
 }
@@ -66,6 +108,9 @@ void Writer::WriteHeader()
     AddColumn(out, 30, 8, "Mean Velocity [m/s]");
     AddColumn(out, 30, 8, "Mean Vehicle Spacing [m]");
     AddColumn(out, 40, 8, "Mean Vehicle Density [unit/100m]");
+    AddColumn(out, 30, 8, "Nb_Vehicles_Cruising");
+    AddColumn(out, 30, 8, "Nb_Vehicles_Accelerating");
+    AddColumn(out, 30, 8, "Nb_Vehicles_Braking");
     out << std::endl;
     out.close();
 }
