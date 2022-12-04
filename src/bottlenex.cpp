@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
 
-    Road* road = new Road(2);
+    Road* road = new Road(1);
 
     road->Evolve();
 
