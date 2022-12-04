@@ -3,12 +3,13 @@
 #include "../include/road.h"
 #include "../include/lane.h"
 #include "../include/car.h"
+#include "../include/constants.h"
 
 Road::Road(int nbLanes)
 {
     currentTime = 0.;
-    deltaTime = 0.1;
-    maxTime = 120.;
+    deltaTime = constants::sim::deltaTime;
+    maxTime = constants::sim::maxTime;
 
     for (int i = 0; i<nbLanes; i++)
     {
@@ -20,7 +21,10 @@ Road::~Road()
 {
     for (Lane* lane : lanes)
     {
-        delete lane;
+        if (lane != nullptr)
+        {
+            delete lane;
+        }
     }
 }
 
@@ -31,7 +35,7 @@ bool Road::CanSpawnVehicle(Lane* lane)
     if (nbVehiclesOnLane != 0)
     {
         Vehicle* lastVehicleOnLane = lane->GetVehiclesOnLane()[nbVehiclesOnLane - 1];
-        float safeDistanceToEnterLane = 10 * Car::MaxVelocity * deltaTime;
+        float safeDistanceToEnterLane = constants::car::safeDistanceToEnterLaneFactor * Car::MaxVelocity * deltaTime;
         return lastVehicleOnLane->GetDistanceInLane() > safeDistanceToEnterLane;
     }
     else
@@ -44,7 +48,7 @@ void Road::SpawnVehicles()
 {
     for (Lane* lane : lanes)
     {
-        if (CanSpawnVehicle(lane))
+        if (lane != nullptr && CanSpawnVehicle(lane))
         {
             lane->InsertVehicle(new Car());
         }
@@ -78,7 +82,7 @@ void Road::Evolve()
 
 bool Road::IsDumpTimeStep() const
 {
-    int nbDumps = 1000;
+    int nbDumps = constants::sim::nbDumps;
     int step = (int) (currentTime / deltaTime);
     int nbSteps = (int)(maxTime / deltaTime);
     int dumpStep = nbSteps / nbDumps;

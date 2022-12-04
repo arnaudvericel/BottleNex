@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iomanip>
 #include <fstream>
+#include <iostream>
 
 #include "../include/lane.h"
 #include "../include/vehicle.h"
@@ -27,7 +28,10 @@ Lane::~Lane()
 {
     for (Vehicle* vehicle : vehicles)
     {
-        delete vehicle;
+        if (vehicle != nullptr)
+        {
+            delete vehicle;
+        }
     }
 }
 
@@ -71,16 +75,31 @@ std::vector<Vehicle*>::iterator Lane::FindVehicleIterIndex(const Vehicle* vehicl
 
 void Lane::RemoveVehicle(Vehicle* vehicle)
 {
-    auto vehicleIterIndex = FindVehicleIterIndex(vehicle);
-    this->vehicles.erase(vehicleIterIndex);
-    delete vehicle;
+    if (vehicle != nullptr)
+    {
+        auto vehicleIterIndex = FindVehicleIterIndex(vehicle);
+        this->vehicles.erase(vehicleIterIndex);
+
+        Vehicle* backwardVehicle = vehicle->GetBackwardVehicle();
+        if (backwardVehicle != nullptr)
+        {
+            backwardVehicle->SetForwardVehicle(nullptr);
+        }
+
+        Vehicle* forwardVehicle = vehicle->GetForwardVehicle();
+        if (forwardVehicle != nullptr)
+        {
+            forwardVehicle->SetBackwardVehicle(nullptr);
+        }
+
+        delete vehicle;
+    }
 }
 
 void Lane::InsertVehicle(Vehicle* newVehicle)
 {
     vehicles.push_back(newVehicle);
     newVehicle->SetLane(this);
-    newVehicle->SetForwardVehicle(nullptr);
 
     UpdateVehiclesLinklist();
     
