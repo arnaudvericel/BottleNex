@@ -21,7 +21,7 @@ Vehicle::Vehicle(float len, float maxspeed, float accel)
     // dynamic state init
     motionState = Motion::Accelerating;
     distanceInLane = 0.;
-    currentVelocity = maxVelocity/2.;
+    currentVelocity = 0.;
     nbActiveVehicles++;
 }
 
@@ -63,6 +63,11 @@ float Vehicle::GetDistanceInLane() const
 void Vehicle::SetForwardVehicle(Vehicle* vehicle)
 {
     forwardVehicle = vehicle;
+
+    if (vehicle != nullptr && vehicle->GetBackwardVehicle() != this)
+    {
+        vehicle->SetBackwardVehicle(this);
+    }
 }
 
 Vehicle* Vehicle::GetForwardVehicle() const
@@ -73,6 +78,26 @@ Vehicle* Vehicle::GetForwardVehicle() const
 int Vehicle::GetId() const
 {
     return id;
+}
+
+void Vehicle::SetBackwardVehicle(Vehicle* vehicle)
+{
+    backwardVehicle = vehicle;
+
+    if (vehicle != nullptr && vehicle->GetForwardVehicle() != this)
+    {
+        vehicle->SetForwardVehicle(this);
+    }
+}
+
+Vehicle* Vehicle::GetBackwardVehicle() const
+{
+    return backwardVehicle;
+}
+
+Motion Vehicle::GetMotionState() const
+{
+    return motionState;
 }
 
 void Vehicle::UpdatePosition(const float deltaTime)

@@ -1,11 +1,14 @@
 #include <iostream>
 #include "../include/car.h"
 #include "../include/enums.h"
+#include "../include/constants.h"
 
 int Car::nbActiveCars = 0;
 
 Car::Car() : Vehicle(Length, MaxVelocity, Acceleration)
 {
+    motionState = constants::car::startMotion;
+    currentVelocity = constants::car::startVelocityFactor * maxVelocity;
     nbActiveCars++;
 }
 
@@ -49,8 +52,8 @@ void Car::EvaluateMotionState(const float deltaTime)
 {
     // todo : complete
 
-    float accelereationDistance = 5. * currentVelocity * deltaTime;
-    float cruisingDistance = 10. * maxVelocity * deltaTime;
+    float accelereationDistance = constants::car::accelDistanceFactor * currentVelocity * deltaTime;
+    float cruisingDistance = constants::car::cruiseDistanceFactor * maxVelocity * deltaTime;
     float distanceToNextVehicle = 0.;
 
     if (forwardVehicle != nullptr)

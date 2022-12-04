@@ -28,6 +28,7 @@ protected:
 
     Lane* lane;
     Vehicle* forwardVehicle;
+    Vehicle* backwardVehicle;
 
     // methods
     virtual void Brake(const float) = 0;
@@ -53,7 +54,10 @@ public:
 
     void SetForwardVehicle(Vehicle*);
     Vehicle* GetForwardVehicle() const;
+    void SetBackwardVehicle(Vehicle*);
+    Vehicle* GetBackwardVehicle() const;
     int GetId() const;
+    Motion GetMotionState() const;
 };
 
 #endif
