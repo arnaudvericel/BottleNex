@@ -1,4 +1,5 @@
 #include <iostream>
+#include "time.h"
 
 #include "../include/road.h"
 #include "../include/lane.h"
@@ -7,9 +8,11 @@
 
 Road::Road(int nbLanes)
 {
+    srand(time(NULL));
     currentTime = 0.;
     deltaTime = constants::sim::deltaTime;
     maxTime = constants::sim::maxTime;
+    spawnStep = (int)(60. / constants::sim::vehiclesPerMin);
 
     for (int i = 0; i<nbLanes; i++)
     {
@@ -30,18 +33,8 @@ Road::~Road()
 
 bool Road::CanSpawnVehicle(Lane* lane)
 {
-    // TODO : option to spawn different types of vehicles
-    int nbVehiclesOnLane = lane->GetNbVehiclesOnLane();
-    if (nbVehiclesOnLane != 0)
-    {
-        Vehicle* lastVehicleOnLane = lane->GetVehiclesOnLane()[nbVehiclesOnLane - 1];
-        float safeDistanceToEnterLane = constants::car::safeDistanceToEnterLaneFactor * Car::MaxVelocity * deltaTime;
-        return lastVehicleOnLane->GetDistanceInLane() > safeDistanceToEnterLane;
-    }
-    else
-    {
-        return true;
-    }
+    int step = (int) (currentTime / deltaTime);
+    return (step % spawnStep == 0) && (lane->GetFreeSpaceOnLane() > constants::car::safeDistanceToEnterLaneFactor * Car::Length);
 }
 
 void Road::SpawnVehicles()
@@ -50,7 +43,8 @@ void Road::SpawnVehicles()
     {
         if (lane != nullptr && CanSpawnVehicle(lane))
         {
-            lane->InsertVehicle(new Car());
+            float multiplier = (float)((rand() % 50 + 75) / 100.);
+            lane->InsertVehicle(new Car(multiplier));
         }
     }
 }

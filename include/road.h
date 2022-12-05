@@ -13,6 +13,7 @@ private:
     float currentTime;
     float deltaTime;
     float maxTime;
+    int spawnStep;
     vector<Lane*> lanes;
 
     bool CanSpawnVehicle(Lane*);
