@@ -141,6 +141,19 @@ int Lane::GetId() const
     return id;
 }
 
+float Lane::GetFreeSpaceOnLane() const
+{
+    if (vehicles.size() > 0)
+    {
+        Vehicle* lastVehicleOnLane = vehicles[vehicles.size() - 1];
+        return lastVehicleOnLane->GetDistanceInLane() - lastVehicleOnLane->GetLength();
+    }
+    else
+    {
+        return length;
+    }
+}
+
 void Lane::WriteStep(const float time)
 {
     writer.WriteStep(time);

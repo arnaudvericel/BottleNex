@@ -41,6 +41,7 @@ public:
     float GetMaxAllowedSpeed() const;
     float GetLength() const;
     int GetId() const;
+    float GetFreeSpaceOnLane() const;
 };
 
 #endif
