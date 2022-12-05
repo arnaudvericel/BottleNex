@@ -21,6 +21,7 @@ protected:
     float acceleration; // km/h/s
 
     // evolution-related
+    float targetVelocity;
     float currentVelocity;
     float distanceInLane;
 
@@ -36,6 +37,9 @@ protected:
     virtual void Accelerate(const float) = 0;
     virtual void EvaluateMotionState(const float) = 0;
 
+    void UpdatePosition(const float);
+    void UpdateMotionState();
+
 public:
     Vehicle(float, float, float);
     virtual ~Vehicle();
@@ -45,19 +49,16 @@ public:
     float GetDistanceInLane() const;
     float GetMaxVelocity() const;
     float GetAcceleration() const;
-
-    void UpdatePosition(const float);
-    void Move(const float);
-
-    void SetLane(Lane*);
-    Lane* GetLane() const;
-
     void SetForwardVehicle(Vehicle*);
     Vehicle* GetForwardVehicle() const;
     void SetBackwardVehicle(Vehicle*);
     Vehicle* GetBackwardVehicle() const;
     int GetId() const;
     Motion GetMotionState() const;
+    void SetLane(Lane*);
+    Lane* GetLane() const;
+
+    void Move(const float);
 };
 
 #endif

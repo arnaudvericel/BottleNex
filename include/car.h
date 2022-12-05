@@ -18,7 +18,7 @@ public:
     virtual void EvaluateMotionState(const float) override;
 
 public:
-    Car();
+    Car(float);
     ~Car();
 };
 

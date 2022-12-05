@@ -5,10 +5,10 @@
 
 int Car::nbActiveCars = 0;
 
-Car::Car() : Vehicle(Length, MaxVelocity, Acceleration)
+Car::Car(float multiplier) : Vehicle(Length, MaxVelocity, Acceleration)
 {
     motionState = constants::car::startMotion;
-    currentVelocity = constants::car::startVelocityFactor * maxVelocity;
+    currentVelocity = multiplier * constants::car::startVelocityFactor * maxVelocity;
     nbActiveCars++;
 }
 
@@ -37,12 +37,12 @@ void Car::Cruise(const float deltaTime)
 
 void Car::Accelerate(const float deltaTime)
 {
-    if (currentVelocity < maxVelocity)
+    if (currentVelocity < targetVelocity)
     {
         currentVelocity += acceleration * deltaTime;
-        if (currentVelocity > maxVelocity)
+        if (currentVelocity > targetVelocity)
         {
-            currentVelocity = maxVelocity;
+            currentVelocity = targetVelocity;
         }
     }
     UpdatePosition(deltaTime);
@@ -50,39 +50,23 @@ void Car::Accelerate(const float deltaTime)
 
 void Car::EvaluateMotionState(const float deltaTime)
 {
-    // todo : complete
-
-    float accelereationDistance = constants::car::accelDistanceFactor * currentVelocity * deltaTime;
-    float cruisingDistance = constants::car::cruiseDistanceFactor * maxVelocity * deltaTime;
-    float distanceToNextVehicle = 0.;
-
     if (forwardVehicle != nullptr)
     {
-        distanceToNextVehicle = forwardVehicle->GetDistanceInLane() - distanceInLane;
+        float distanceAtNextIteration = currentVelocity * deltaTime;
+        float brakingDistance = constants::car::brakingDistanceFactor * distanceAtNextIteration;
+        float accelereationDistance = constants::car::accelDistanceFactor * distanceAtNextIteration;
+        float cruisingDistance = constants::car::cruiseDistanceFactor * distanceAtNextIteration;
+        float distanceToNextVehicle = forwardVehicle->GetDistanceInLane() - distanceInLane - forwardVehicle->GetLength();
+
+        if (distanceToNextVehicle <= brakingDistance) { targetVelocity = 0.; }
+        else if (distanceToNextVehicle <= cruisingDistance) { targetVelocity = forwardVehicle->GetCurrentVelocity(); }
+        else if (distanceToNextVehicle > accelereationDistance) { targetVelocity = maxVelocity; }
     }
+    // "first" vehicle in lane -> wants to reach maxVelocity, no forward vehicle to slow it down
     else
     {
-        // the first vehicle on lane does not have a forward vehicle
-        distanceToNextVehicle = cruisingDistance;
+        targetVelocity = maxVelocity;
     }
 
-    if (distanceToNextVehicle < accelereationDistance)
-    {
-        motionState = Motion::Braking;
-    }
-    else if (distanceToNextVehicle < cruisingDistance)
-    {
-        motionState = Motion::Accelerating;
-    }
-    else
-    {
-        if (currentVelocity == maxVelocity)
-        {
-            motionState = Motion::Cruising;
-        }
-        else
-        {
-            motionState = Motion::Accelerating;
-        }
-    }
+    UpdateMotionState();
 }

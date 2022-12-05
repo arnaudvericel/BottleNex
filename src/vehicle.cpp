@@ -105,6 +105,22 @@ void Vehicle::UpdatePosition(const float deltaTime)
     distanceInLane += currentVelocity * deltaTime;
 }
 
+void Vehicle::UpdateMotionState()
+{
+    if (currentVelocity > targetVelocity)
+    {
+        motionState = Motion::Braking;
+    }
+    else if (currentVelocity == targetVelocity)
+    {
+        motionState = Motion::Cruising;
+    }
+    else
+    {
+        motionState = Motion::Accelerating;
+    }
+}
+
 void Vehicle::Move(const float deltaTime)
 {
     EvaluateMotionState(deltaTime);
