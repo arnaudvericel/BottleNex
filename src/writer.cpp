@@ -8,6 +8,7 @@
 #include "../include/car.h"
 #include "../include/utils.h"
 #include "../include/enums.h"
+#include "../include/constants.h"
 
 Writer::Writer()
 {
@@ -35,7 +36,16 @@ void Writer::SetFilename()
 {
     std::stringstream strId;
     strId << lane->GetId();
-    fileName = "lane_" + strId.str() + ".dat";
+    fileName = "lane_" + strId.str();
+
+    if (lane->HasParentLane())
+    {
+        std::stringstream parentLaneStrId;
+        parentLaneStrId << lane->GetParentLane()->GetId();
+        fileName += "_parent_" + parentLaneStrId.str();
+    }
+
+    fileName += constants::files::extension;
 }
 
 void Writer::InitVehiclesStats()
