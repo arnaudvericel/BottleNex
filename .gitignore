@@ -34,3 +34,9 @@
 # IDE
 .DS_Store
 .vscode
+
+# splash files
+splash.*
+
+# output files
+*.dat
