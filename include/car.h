@@ -7,7 +7,7 @@ class Car : public Vehicle
 {
 public:
     constexpr static float MaxVelocity = 130. / 3.6; // m/s
-    constexpr static float Acceleration = 5; // m/s^2
+    constexpr static float Acceleration = 40; // m/s^2
     constexpr static float Length = 5.; // m
 
     static int nbActiveCars;
