@@ -18,6 +18,12 @@ Road::Road(int nbLanes)
     {
         lanes.push_back(new Lane());
     }
+
+    if (lanes.size() > 0)
+    {
+        Lane* lane = lanes[0];
+        lanes.push_back(new InputLane(lane, 70., lane->GetLength()/2.));
+    }
 }
 
 Road::~Road()
