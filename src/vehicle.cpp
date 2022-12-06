@@ -145,6 +145,14 @@ void Vehicle::Move(const float deltaTime)
     
     if (distanceInLane > lane->GetLength())
     {
-        lane->RemoveVehicle(this);
+        if (lane->HasParentLane())
+        {   
+            lane->TransferVehicleToParentLane(this);
+        }
+        else
+        {
+            lane->RemoveVehicle(this);
+            delete this;
+        }
     }
 }
