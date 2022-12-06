@@ -12,16 +12,15 @@ class Lane
 public:
     static int counter;
 
-private:
+protected:
     float maxAllowedSpeed;
     float length;
     int id;
     Writer writer = Writer();
-
     std::vector<Vehicle*> vehicles;
+    Lane* parentLane;
 
-private:
-    int FindInsertIndex(const Vehicle*, float);
+    std::vector<Vehicle*>::iterator FindInsertIterIndex(const Vehicle*, float);
     int FindVehicleIndex(const Vehicle*);
     std::vector<Vehicle*>::iterator FindVehicleIterIndex(const Vehicle*);
     void UpdateVehiclesLinklist();
@@ -31,10 +30,14 @@ public:
     Lane(float, float);
     ~Lane();
 
+    void TransferVehicleToParentLane(Vehicle*);
     void RemoveVehicle(Vehicle*);
     void InsertVehicle(Vehicle*);
-    void InsertVehicle(Vehicle*, const float);
+    void InsertVehicle(Vehicle*, std::vector<Vehicle*>::iterator);
     void WriteStep(const float);
+
+    bool HasParentLane() const;
+    Lane* GetParentLane() const;
 
     std::vector<Vehicle*> GetVehiclesOnLane() const;
     int GetNbVehiclesOnLane() const;
@@ -42,6 +45,14 @@ public:
     float GetLength() const;
     int GetId() const;
     float GetFreeSpaceOnLane() const;
+};
+
+class InputLane : public Lane
+{
+public:
+    InputLane(Lane*);
+    InputLane(Lane*, float, float);
+    ~InputLane() = default;
 };
 
 #endif
