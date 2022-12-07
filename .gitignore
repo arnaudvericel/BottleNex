@@ -40,3 +40,9 @@ splash.*
 
 # output files
 *.dat
+
+# cxxTest library
+cxxtest
+
+# tests runner
+testRunner.cpp
