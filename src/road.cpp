@@ -59,6 +59,7 @@ void Road::Evolve()
     while (currentTime < maxTime)
     {
         currentTime += deltaTime;
+
         SpawnVehicles();
 
         isDumpTimeStep = IsDumpTimeStep();
@@ -92,4 +93,29 @@ bool Road::IsDumpTimeStep() const
 vector<Lane*> Road::GetLanes() const 
 { 
     return lanes; 
+}
+
+int Road::GetNbLanes() const
+{
+    return lanes.size();
+}
+
+float Road::GetDeltaTime() const
+{
+    return deltaTime;
+}
+
+float Road::GetMaxTime() const
+{
+    return maxTime;
+}
+
+int Road::GetSpawnStep() const
+{
+    return spawnStep;
+}
+
+float Road::GetCurrentTime() const
+{
+    return currentTime;
 }

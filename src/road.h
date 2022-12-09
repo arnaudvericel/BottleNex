@@ -26,6 +26,11 @@ public:
 
     void Evolve();
     vector<Lane*> GetLanes() const;
+    int GetNbLanes() const;
+    float GetDeltaTime() const;
+    float GetMaxTime() const;
+    int GetSpawnStep() const;
+    float GetCurrentTime() const;
 };
 
 #endif
