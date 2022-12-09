@@ -19,8 +19,10 @@ export PATH=$CXXTEST/bin:$PATH
 
 # todo : add runner options
 # @generating test runner file
-cxxtestgen --error-printer -o $TEST_DIR/$RUNNER_CPP $TEST_DIR/test_road.h
+cxxtestgen --xunit-printer -w BottleNex --have-eh -o $TEST_DIR/$RUNNER_CPP $TEST_DIR/test_road.h $TEST_DIR/test_config.h
 
 # todo : refactor
 # @compile test runner file
-g++ -std=c++11 -o $EXE_DIR/$RUNNER_EXE -I$CXXTEST $TEST_DIR/$RUNNER_CPP $SRC_DIR/road.cpp $SRC_DIR/lane.cpp $SRC_DIR/car.cpp $SRC_DIR/vehicle.cpp $SRC_DIR/writer.cpp $SRC_DIR/utils.cpp
+g++ -std=c++11 -o $EXE_DIR/$RUNNER_EXE -I$CXXTEST $TEST_DIR/$RUNNER_CPP $SRC_DIR/road.cpp $SRC_DIR/lane.cpp $SRC_DIR/car.cpp $SRC_DIR/vehicle.cpp $SRC_DIR/writer.cpp $SRC_DIR/utils.cpp $SRC_DIR/config.cpp
+
+$EXE_DIR/$RUNNER_EXE --help-tests
