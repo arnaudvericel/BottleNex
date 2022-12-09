@@ -1,29 +1,25 @@
 #include <iostream>
 #include "time.h"
 
-#include "../include/road.h"
-#include "../include/lane.h"
-#include "../include/car.h"
-#include "../include/constants.h"
+#include "road.h"
+#include "lane.h"
+#include "car.h" // fixme : vehicle factory
+#include "config.h"
 
 Road::Road(int nbLanes)
 {
+    Config* config = Config::GetConfig();
     srand(time(NULL));
-    currentTime = 0.;
-    deltaTime = constants::sim::deltaTime;
-    maxTime = constants::sim::maxTime;
-    spawnStep = (int)(60. / constants::sim::vehiclesPerMin);
 
     for (int i = 0; i<nbLanes; i++)
     {
         lanes.push_back(new Lane());
     }
 
-    if (lanes.size() > 0)
-    {
-        Lane* lane = lanes[0];
-        lanes.push_back(new InputLane(lane, 70., lane->GetLength()/2.));
-    }
+    currentTime = 0.;
+    maxTime = (*config)[Config::FloatSettings::MaxTimeMin] * 60;
+    deltaTime = 3.6 * (*config)[Config::FloatSettings::CondCFL] * (*config)[Config::FloatSettings::CarLength] / (*config)[Config::FloatSettings::LaneLimitVelocity];
+    spawnStep = (int)(60. / ((*config)[Config::FloatSettings::VehiclesPerMinute] * deltaTime));
 }
 
 Road::~Road()
@@ -39,8 +35,9 @@ Road::~Road()
 
 bool Road::CanSpawnVehicle(Lane* lane)
 {
+    Config* config = Config::GetConfig();
     int step = (int) (currentTime / deltaTime);
-    return (step % spawnStep == 0) && (lane->GetFreeSpaceOnLane() > constants::car::safeDistanceToEnterLaneFactor * Car::Length);
+    return (step % spawnStep == 0) && (lane->GetFreeSpaceOnLane() > (*config)[Config::FloatSettings::CarSafeDistanceToEnterLaneFactor] * (*config)[Config::FloatSettings::CarLength]);
 }
 
 void Road::SpawnVehicles()
@@ -49,8 +46,8 @@ void Road::SpawnVehicles()
     {
         if (lane != nullptr && CanSpawnVehicle(lane))
         {
-            float multiplier = (float)((rand() % 50 + 75) / 100.);
-            lane->InsertVehicle(new Car(multiplier));
+            float velocityMultiplier = (float)((rand() % 50 + 75) / 100.);
+            lane->InsertVehicle(new Car(velocityMultiplier));
         }
     }
 }
@@ -82,7 +79,7 @@ void Road::Evolve()
 
 bool Road::IsDumpTimeStep() const
 {
-    int nbDumps = constants::sim::nbDumps;
+    int nbDumps = (*Config::GetConfig())[Config::IntSettings::NbDumps];
     int step = (int) (currentTime / deltaTime);
     int nbSteps = (int)(maxTime / deltaTime);
     int dumpStep = nbSteps / nbDumps;

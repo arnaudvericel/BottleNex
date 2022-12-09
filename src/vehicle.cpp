@@ -1,6 +1,7 @@
 #include <iostream>
-#include "../include/vehicle.h"
-#include "../include/lane.h"
+
+#include "vehicle.h"
+#include "lane.h"
 
 int Vehicle::nbActiveVehicles = 0;
 int Vehicle::counter = 0;
@@ -10,19 +11,19 @@ Vehicle::~Vehicle()
     nbActiveVehicles--;
 }
 
-Vehicle::Vehicle(float len, float maxspeed, float accel)
+Vehicle::Vehicle()
 {
-    // characteristics
-    length = len;
-    maxVelocity = maxspeed;
-    acceleration = accel;
     id = ++counter;
-
-    // dynamic state init
-    motionState = Motion::Accelerating;
-    distanceInLane = 0.;
-    currentVelocity = 0.;
     nbActiveVehicles++;
+    //
+    length = 0;
+    maxVelocity = 0;
+    targetVelocity = 0;
+    currentVelocity = 0;
+    acceleration = 0;
+    deceleration = 0;
+    motionState = Motion::Accelerating;
+    distanceInLane = 0;
 }
 
 float Vehicle::GetLength() const
@@ -47,7 +48,8 @@ float Vehicle::GetAcceleration() const
 
 void Vehicle::SetLane(Lane* newLane) 
 {
-    lane = newLane; 
+    lane = newLane;
+    maxVelocity = lane->GetMaxAllowedSpeed();
 }
 
 Lane* Vehicle::GetLane() const 
@@ -124,7 +126,6 @@ void Vehicle::UpdateMotionState()
 void Vehicle::Move(const float deltaTime)
 {
     EvaluateMotionState(deltaTime);
-
     switch (motionState)
     {
     case Motion::Braking:
@@ -142,9 +143,10 @@ void Vehicle::Move(const float deltaTime)
     default:
         break;
     }
-    
+
     if (distanceInLane > lane->GetLength())
     {
+
         if (lane->HasParentLane())
         {   
             lane->TransferVehicleToParentLane(this);
@@ -155,4 +157,5 @@ void Vehicle::Move(const float deltaTime)
             delete this;
         }
     }
+
 }

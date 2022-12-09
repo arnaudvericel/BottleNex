@@ -3,12 +3,12 @@
 #include <iomanip>
 #include <iostream>
 
-#include "../include/writer.h"
-#include "../include/lane.h"
-#include "../include/car.h"
-#include "../include/utils.h"
-#include "../include/enums.h"
-#include "../include/constants.h"
+#include "vehicle.h"
+#include "writer.h"
+#include "lane.h"
+#include "utils.h"
+#include "enums.h"
+#include "constants.h"
 
 Writer::Writer()
 {
@@ -97,7 +97,7 @@ void Writer::WriteStep(const float time)
     out.open(fileName, std::ios::out | std::ios::app);
     AddColumn(out, 10, 8, time);
     AddColumn(out, 20, 8, lane->GetNbVehiclesOnLane());
-    AddColumn(out, 20, 8, lane->GetNbVehiclesOnLane()); // fixme : sort by vehicle type
+    AddColumn(out, 20, 8, lane->GetNbVehiclesOnLane());
     AddColumn(out, 30, 8, GetMeanVelocity());
     AddColumn(out, 30, 8, GetMeanDistance());
     AddColumn(out, 40, 8, GetMeanDensity());

@@ -3,26 +3,22 @@
 #include <fstream>
 #include <iostream>
 
-#include "../include/lane.h"
-#include "../include/vehicle.h"
-#include "../include/utils.h"
-#include "../include/car.h"
+#include "lane.h"
+#include "vehicle.h"
+#include "utils.h"
+#include "car.h"
+#include "config.h"
 
 int Lane::counter = 0;
 
 Lane::Lane()
 {
+    Config* config = Config::GetConfig();
     parentLane = nullptr;
-    maxAllowedSpeed = 130. / 3.6;
-    length = 2000.; // m
+    maxAllowedSpeed = (*config)[Config::FloatSettings::LaneLimitVelocity] / 3.6;
+    length = (*config)[Config::FloatSettings::LaneLength];
     id = ++counter;
     writer.Init(this);
-}
-
-Lane::Lane(float maxspeed, float lengthm) : Lane()
-{
-    maxAllowedSpeed = maxspeed;
-    length = lengthm; 
 }
 
 Lane::~Lane()
@@ -45,11 +41,11 @@ void Lane::TransferVehicleToParentLane(Vehicle* vehicleToTransfer)
         parentLane->InsertVehicle(vehicleToTransfer, vehicleInsertIterIndex);
 
         // removing the vehicle from its current lane
-        this->RemoveVehicle(vehicleToTransfer);
+        RemoveVehicle(vehicleToTransfer);
 
         // rebuilding the vehicle link list on all affected lanes
-        this->UpdateVehiclesLinklist();
-        this->parentLane->UpdateVehiclesLinklist();
+        UpdateVehiclesLinklist();
+        parentLane->UpdateVehiclesLinklist();
     }
 }
 

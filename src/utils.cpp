@@ -1,6 +1,6 @@
 #include <sys/stat.h>
 
-#include "../include/utils.h"
+#include "utils.h"
 
 bool fileExists(const std::string& fileName)
 {
