@@ -113,3 +113,23 @@ std::ostream& operator<<(std::ostream& stream, const Config::IntSettings& settin
 {
     return stream << ConfigIntSettingsName[(int)setting];
 }
+
+Config::FloatSettings& operator++(Config::FloatSettings& elem)
+{
+    if (elem == Config::FloatSettings::CarSafeDistanceToEnterLaneFactor)
+    {
+        throw std::out_of_range("for Config::FloatSettings operator ++");
+    }
+    elem = Config::FloatSettings(static_cast<std::underlying_type<Config::FloatSettings>::type>(elem) + 1);
+    return elem;
+}
+
+Config::IntSettings& operator++(Config::IntSettings& elem)
+{
+    if (elem == Config::IntSettings::NbDumps)
+    {
+        throw std::out_of_range("for Config::IntSettings operator ++");
+    }
+    elem = Config::IntSettings(static_cast<std::underlying_type<Config::IntSettings>::type>(elem) + 1);
+    return elem;
+}

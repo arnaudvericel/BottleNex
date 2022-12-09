@@ -60,5 +60,7 @@ public:
 
 std::ostream& operator<<(std::ostream&, const Config::FloatSettings&);
 std::ostream& operator<<(std::ostream&, const Config::IntSettings&);
+Config::FloatSettings& operator++(Config::FloatSettings&);
+Config::IntSettings& operator++(Config::IntSettings&);
 
 #endif
