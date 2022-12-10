@@ -20,7 +20,7 @@ public:
     // Tests that every configuration field takes the correct value by default
     void TestDefault()
     {
-        TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CondCFL], constants::sim::factorCFLDefault);
+        TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::FactorCFL], constants::sim::factorCFLDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::LaneLength], constants::lane::lengthDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::LaneLimitVelocity], constants::lane::limitVelocityDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::MaxTimeMin], constants::sim::maxTimeMinDefault);
