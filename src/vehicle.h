@@ -3,8 +3,6 @@
 
 #include "enums.h"
 
-using namespace std;
-
 class Lane;
 
 class Vehicle

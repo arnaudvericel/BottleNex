@@ -32,6 +32,14 @@ Lane::~Lane()
     }
 }
 
+void Lane::MoveVehicles(const float& deltaTime)
+{
+    for (Vehicle* vehicle : vehicles)
+        {
+            vehicle->Move(deltaTime);
+        }
+}
+
 void Lane::TransferVehicleToParentLane(Vehicle* vehicleToTransfer)
 {
     if (parentLane != nullptr)

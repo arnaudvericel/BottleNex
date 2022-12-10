@@ -29,6 +29,7 @@ public:
     Lane();
     ~Lane();
 
+    void MoveVehicles(const float&);
     void TransferVehicleToParentLane(Vehicle*);
     void RemoveVehicle(Vehicle*);
     void InsertVehicle(Vehicle*);
