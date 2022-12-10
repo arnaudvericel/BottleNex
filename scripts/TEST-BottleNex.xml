@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite name="BottleNex" date="Fri Dec  9 18:15:05 2022" tests="6" errors="0" failures="0" time="0" >
-    <testcase classname="TestRoad" name="TestInit" line="26" />
-    <testcase classname="TestRoad" name="TestEvolve" line="43" />
+<testsuite name="BottleNex" date="Sat Dec 10 10:50:55 2022" tests="8" errors="0" failures="0" time="0" >
+    <testcase classname="TestRoad" name="TestInit" line="30" />
+    <testcase classname="TestRoad" name="TestEvolve" line="47" />
     <testcase classname="TestConfig" name="TestDefault" line="21" />
     <testcase classname="TestConfig" name="TestSet" line="41" />
     <testcase classname="TestConfig" name="TestReset" line="58" />
@@ -12,4 +12,6 @@ In TestConfig::TestLoad:
 /Users/Arnaud/Documents/Codes.nosync/BottleNex/test_src/test_config.h:83: Warning: Test skipped: TODO
 s</system-out>
     </testcase>
+    <testcase classname="TestVehicleFactory" name="TestDefault" line="52" />
+    <testcase classname="TestVehicleFactory" name="TestBuild" line="63" />
 </testsuite>
