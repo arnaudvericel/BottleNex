@@ -1,15 +1,15 @@
 #include <iostream>
-#include "time.h"
 
+#include "enums.h"
 #include "road.h"
 #include "lane.h"
-#include "car.h" // fixme : vehicle factory
 #include "config.h"
+#include "vehicle_factory.h"
 
-Road::Road(int nbLanes)
+Road::Road(int nbLanes, VehicleFactory* factory)
 {
     Config* config = Config::GetConfig();
-    srand(time(NULL));
+    vehicleFactory = factory;
 
     for (int i = 0; i<nbLanes; i++)
     {
@@ -18,7 +18,7 @@ Road::Road(int nbLanes)
 
     currentTime = 0.;
     maxTime = (*config)[Config::FloatSettings::MaxTimeMin] * 60;
-    deltaTime = 3.6 * (*config)[Config::FloatSettings::CondCFL] * (*config)[Config::FloatSettings::CarLength] / (*config)[Config::FloatSettings::LaneLimitVelocity];
+    deltaTime = 3.6 * (*config)[Config::FloatSettings::FactorCFL] * (*config)[Config::FloatSettings::CarLength] / (*config)[Config::FloatSettings::LaneLimitVelocity];
     spawnStep = (int)(60. / ((*config)[Config::FloatSettings::VehiclesPerMinute] * deltaTime));
 }
 
@@ -46,8 +46,8 @@ void Road::SpawnVehicles()
     {
         if (lane != nullptr && CanSpawnVehicle(lane))
         {
-            float velocityMultiplier = (float)((rand() % 50 + 75) / 100.);
-            lane->InsertVehicle(new Car(velocityMultiplier));
+            Vehicle* newVehicle = vehicleFactory->Build(VehicleType::Car);
+            lane->InsertVehicle(newVehicle);
         }
     }
 }
@@ -66,10 +66,8 @@ void Road::Evolve()
 
         for (Lane* lane : lanes)
         {
-            for (Vehicle* vehicle : lane->GetVehiclesOnLane())
-            {
-                vehicle->Move(deltaTime);
-            }
+            lane->MoveVehicles(deltaTime);
+
             if (isDumpTimeStep)
             {
                 lane->WriteStep(currentTime);
@@ -90,7 +88,7 @@ bool Road::IsDumpTimeStep() const
     return (step % dumpStep == 0) ;
 }
 
-vector<Lane*> Road::GetLanes() const 
+std::vector<Lane*> Road::GetLanes() const 
 { 
     return lanes; 
 }
