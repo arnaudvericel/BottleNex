@@ -25,6 +25,12 @@ namespace constants
         const float vehiclesPerMinuteDefault = 10.;
     }
 
+    namespace vehicle
+    {
+        const int factoryFactorMinDefault = 75;
+        const int factoryFactorMaxDefault = 125;
+    }
+
     namespace car
     {
         const float maxVelocityDefault = 150.;

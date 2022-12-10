@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "road.h"
-#include "car.h"
+#include "vehicle_factory.h"
 #include "config.h"
 
 int main(int argc, char** argv)
@@ -9,12 +9,15 @@ int main(int argc, char** argv)
     Config* myConfig = Config::GetConfig();
     myConfig->PrintConfig();
 
-    Road* road = new Road(1);
+    VehicleFactory* factory = new VehicleFactory();
+
+    Road* road = new Road(1, factory);
 
     road->Evolve();
 
     delete road;
     delete myConfig;
+    delete factory;
 
     return 0;
 }

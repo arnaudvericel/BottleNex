@@ -4,10 +4,10 @@
 #include <string>
 #include <map>
 
-const std::string ConfigFloatSettingsName[] = { "MaxTimeMin", "CondCFL", "LaneLimitVelocity", "LaneLength", "CarMaxVelocity", "CarLength", "CarAcceleration", 
+const std::string ConfigFloatSettingsName[] = { "MaxTimeMin", "FactorCFL", "LaneLimitVelocity", "LaneLength", "CarMaxVelocity", "CarLength", "CarAcceleration", 
     "CarDeceleration", "VehiclesPerMinute", "CarBrakingDistanceFactor", "CarCruisingDistanceFactor", "CarAccelerationDistanceFactor", "CarStartVelocityFactor",
-    "CarSafeDistanceToEnterLaneFactor" };
-const std::string ConfigFloatSettingsUnit[] = { "min", "/", "km/h", "m", "km/h", "m", "m/s^2", "m/s^2", "per min", "/", "/", "/", "/", "/" };
+    "CarSafeDistanceToEnterLaneFactor", "FactoryFactorMin", "FactoryFactorMax" };
+const std::string ConfigFloatSettingsUnit[] = { "min", "/", "km/h", "m", "km/h", "m", "m/s^2", "m/s^2", "per min", "/", "/", "/", "/", "/", "/", "/" };
 
 const std::string ConfigIntSettingsName[] = { "NbDumps" };
 const std::string ConfigIntSettingsUnit[] = { "/" };
@@ -18,7 +18,7 @@ public:
     enum class FloatSettings
     {
         MaxTimeMin,
-        CondCFL,
+        FactorCFL,
         LaneLimitVelocity,
         LaneLength,
         CarMaxVelocity,
@@ -30,7 +30,9 @@ public:
         CarCruisingDistanceFactor,
         CarAccelerationDistanceFactor,
         CarStartVelocityFactor,
-        CarSafeDistanceToEnterLaneFactor
+        CarSafeDistanceToEnterLaneFactor,
+        FactoryFactorMin,
+        FactoryFactorMax
     };
     enum class IntSettings
     {

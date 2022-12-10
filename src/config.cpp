@@ -55,7 +55,7 @@ void Config::InitSettings()
 {
     // float settings
     Set(FloatSettings::MaxTimeMin, constants::sim::maxTimeMinDefault);
-    Set(FloatSettings::CondCFL, constants::sim::factorCFLDefault);
+    Set(FloatSettings::FactorCFL, constants::sim::factorCFLDefault);
     Set(FloatSettings::LaneLimitVelocity, constants::lane::limitVelocityDefault);
     Set(FloatSettings::LaneLength, constants::lane::lengthDefault);
     Set(FloatSettings::CarMaxVelocity, constants::car::maxVelocityDefault);
@@ -68,6 +68,8 @@ void Config::InitSettings()
     Set(FloatSettings::CarCruisingDistanceFactor, constants::car::cruiseDistanceFactorDefault);
     Set(FloatSettings::CarSafeDistanceToEnterLaneFactor, constants::car::safeDistanceToEnterLaneFactorDefault);
     Set(FloatSettings::CarStartVelocityFactor, constants::car::startVelocityFactorDefault);
+    Set(FloatSettings::FactoryFactorMin, constants::vehicle::factoryFactorMinDefault);
+    Set(FloatSettings::FactoryFactorMax, constants::vehicle::factoryFactorMaxDefault);
     // int settings
     Set(IntSettings::NbDumps, constants::sim::nbDumpsDefault);
 }
