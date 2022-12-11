@@ -16,6 +16,7 @@ namespace constants
         const float factorCFLDefault = 1.0;
         const int nbDumpsDefault = 1000;
         const float maxTimeMinDefault = 10.;
+        const float deltaTimeDefault = 0.1;
     }
 
     namespace lane

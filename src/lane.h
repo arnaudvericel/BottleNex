@@ -15,18 +15,21 @@ public:
 protected:
     float maxAllowedSpeed;
     float length;
+    float vehiclesPerMinute;
     int id;
     Writer writer = Writer();
     std::vector<Vehicle*> vehicles;
     Lane* parentLane;
+    float junctionPoint;
 
-    std::vector<Vehicle*>::iterator FindInsertIterIndex(const Vehicle*, float);
+    std::vector<Vehicle*>::iterator FindInsertIterIndex(float);
     int FindVehicleIndex(const Vehicle*);
     std::vector<Vehicle*>::iterator FindVehicleIterIndex(const Vehicle*);
     void UpdateVehiclesLinklist();
 
 public:
     Lane();
+    Lane(float len, float maxV, float vPerMin);
     ~Lane();
 
     void MoveVehicles(const float&);
@@ -50,8 +53,7 @@ public:
 class InputLane : public Lane
 {
 public:
-    InputLane(Lane*);
-    InputLane(Lane*, float, float);
+    InputLane(Lane* parent, float junPoint, float lengthm, float maxspeed, float vPerMin);
     ~InputLane() = default;
 };
 

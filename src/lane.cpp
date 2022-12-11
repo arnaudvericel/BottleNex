@@ -7,16 +7,28 @@
 #include "vehicle.h"
 #include "utils.h"
 #include "car.h"
-#include "config.h"
+#include "constants.h"
 
 int Lane::counter = 0;
 
 Lane::Lane()
 {
-    Config* config = Config::GetConfig();
     parentLane = nullptr;
-    maxAllowedSpeed = (*config)[Config::FloatSettings::LaneLimitVelocity] / 3.6;
-    length = (*config)[Config::FloatSettings::LaneLength];
+    junctionPoint = 0;
+    maxAllowedSpeed = constants::lane::limitVelocityDefault / 3.6;
+    length = constants::lane::lengthDefault;
+    vehiclesPerMinute = constants::lane::vehiclesPerMinuteDefault;
+    id = ++counter;
+    writer.Init(this);
+}
+
+Lane::Lane(float len, float maxV, float vPerMin)
+{
+    parentLane = nullptr;
+    junctionPoint = 0;
+    maxAllowedSpeed = maxV / 3.6;
+    length = len;
+    vehiclesPerMinute = vPerMin;
     id = ++counter;
     writer.Init(this);
 }
@@ -45,8 +57,9 @@ void Lane::TransferVehicleToParentLane(Vehicle* vehicleToTransfer)
     if (parentLane != nullptr)
     {
         // inserting the vehicle to its destination lane
-        std::vector<Vehicle*>::iterator vehicleInsertIterIndex = parentLane->FindInsertIterIndex(vehicleToTransfer, vehicleToTransfer->GetDistanceInLane()); // fixme : junction Distance
+        std::vector<Vehicle*>::iterator vehicleInsertIterIndex = parentLane->FindInsertIterIndex(junctionPoint);
         parentLane->InsertVehicle(vehicleToTransfer, vehicleInsertIterIndex);
+        vehicleToTransfer->SetDistanceInlane(junctionPoint);
 
         // removing the vehicle from its current lane
         RemoveVehicle(vehicleToTransfer);
@@ -67,7 +80,7 @@ int Lane::GetNbVehiclesOnLane() const
     return vehicles.size();
 }
 
-std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(const Vehicle* otherVehicle, float crossingPosition)
+std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(float crossingPosition)
 {
     int insertIndex = 0; // we start the search at the very first vehicle on lane (with largest distance on lane)
     
@@ -215,14 +228,12 @@ Lane* Lane::GetParentLane() const
     return parentLane;
 }
 
-InputLane::InputLane(Lane* parent)
+InputLane::InputLane(Lane* parent, float junPoin, float lengthm, float maxspeed, float vPerMin)
 {
     parentLane = parent;
-    writer.Init(this);
-}
-
-InputLane::InputLane(Lane* parent, float maxspeed, float lengthm) : InputLane(parent)
-{
-    maxAllowedSpeed = maxspeed;
+    junctionPoint = junPoin;
+    maxAllowedSpeed = maxspeed / 3.6;
     length = lengthm;
+    vehiclesPerMinute = vPerMin;
+    writer.Init(this);
 }
