@@ -6,17 +6,18 @@
 
 int Car::nbActiveCars = 0;
 
-Car::Car(float initVelocityMultiplier) : Vehicle()
+Car::Car(Lane* lane, float initVelocityMultiplier) : Vehicle() // fixme : SetLane in vehicle constructor
 {
     Config* config = Config::GetConfig();
 
+    SetLane(lane);
     length = (*config)[Config::FloatSettings::CarLength];
-    maxVelocity = (*config)[Config::FloatSettings::CarMaxVelocity] / 3.6;
     acceleration = (*config)[Config::FloatSettings::CarAcceleration];
     deceleration = (*config)[Config::FloatSettings::CarDeceleration];
 
     motionState = constants::car::startMotion;
     currentVelocity = initVelocityMultiplier * (*config)[Config::FloatSettings::CarStartVelocityFactor] * maxVelocity;
+    //std::cout << currentVelocity << " " << currentVelocity * 3.6 << std::endl;
     nbActiveCars++;
 }
 
@@ -67,6 +68,8 @@ void Car::EvaluateMotionState(const float deltaTime)
         float accelereationDistance = (*config)[Config::FloatSettings::CarAccelerationDistanceFactor] * distanceAtNextIteration;
         float cruisingDistance = (*config)[Config::FloatSettings::CarCruisingDistanceFactor] * distanceAtNextIteration;
         float distanceToNextVehicle = forwardVehicle->GetDistanceInLane() - distanceInLane - forwardVehicle->GetLength();
+
+        //std::cout << deltaTime << " " << distanceAtNextIteration << " " << brakingDistance << " " << accelereationDistance << " " << cruisingDistance << " " << distanceToNextVehicle << std::endl;
 
         if (distanceToNextVehicle <= brakingDistance) { targetVelocity = 0.; }
         else if (distanceToNextVehicle <= cruisingDistance) { targetVelocity = forwardVehicle->GetCurrentVelocity(); }

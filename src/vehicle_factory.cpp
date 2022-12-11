@@ -21,7 +21,7 @@ VehicleFactory::VehicleFactory(int initFactorMin, int initFactorMax)
     initVelocityFactorMax = initFactorMax;
 }
 
-Vehicle* VehicleFactory::Build(const VehicleType& vehicleType)
+Vehicle* VehicleFactory::Build(Lane* lane, const VehicleType& vehicleType)
 {
     int delta = initVelocityFactorMax - initVelocityFactorMin + 1;
     float velocityMultiplier = (float)(rand() % delta + initVelocityFactorMin) / 100.;
@@ -29,7 +29,7 @@ Vehicle* VehicleFactory::Build(const VehicleType& vehicleType)
     switch (vehicleType)
     {
     case VehicleType::Car:
-        return new Car(velocityMultiplier);
+        return new Car(lane, velocityMultiplier);
         break;
     
     default:

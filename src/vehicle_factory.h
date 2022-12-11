@@ -4,6 +4,7 @@
 #include "enums.h"
 
 class Vehicle;
+class Lane;
 
 class VehicleFactory
 {
@@ -15,7 +16,7 @@ public:
     VehicleFactory();
     VehicleFactory(int, int);
     ~VehicleFactory() = default;
-    Vehicle* Build(const VehicleType&);
+    Vehicle* Build(Lane*, const VehicleType&);
     int GetInitVelocityFactorMin() const;
     int GetInitVelocityFactoryMax() const;
 };

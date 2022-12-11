@@ -56,6 +56,7 @@ public:
     Motion GetMotionState() const;
     void SetLane(Lane*);
     Lane* GetLane() const;
+    void SetDistanceInlane(const float);
 
     void Move(const float);
 };

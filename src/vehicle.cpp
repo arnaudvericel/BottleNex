@@ -146,7 +146,6 @@ void Vehicle::Move(const float deltaTime)
 
     if (distanceInLane > lane->GetLength())
     {
-
         if (lane->HasParentLane())
         {   
             lane->TransferVehicleToParentLane(this);
@@ -158,4 +157,9 @@ void Vehicle::Move(const float deltaTime)
         }
     }
 
+}
+
+void Vehicle::SetDistanceInlane(const float dist)
+{
+    distanceInLane = dist;
 }

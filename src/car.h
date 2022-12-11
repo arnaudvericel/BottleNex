@@ -3,6 +3,8 @@
 
 #include "vehicle.h"
 
+class Lane;
+
 class Car : public Vehicle
 {
 public:
@@ -14,7 +16,7 @@ public:
     virtual void EvaluateMotionState(const float) override;
 
 public:
-    Car(float);
+    Car(Lane*, float);
     ~Car();
 };
 
