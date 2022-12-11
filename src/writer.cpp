@@ -98,7 +98,7 @@ void Writer::WriteStep(const float time)
     AddColumn(out, 10, 8, time);
     AddColumn(out, 20, 8, lane->GetNbVehiclesOnLane());
     AddColumn(out, 20, 8, lane->GetNbVehiclesOnLane());
-    AddColumn(out, 30, 8, GetMeanVelocity());
+    AddColumn(out, 30, 8, GetMeanVelocity() * 3.6);
     AddColumn(out, 30, 8, GetMeanDistance());
     AddColumn(out, 40, 8, GetMeanDensity());
     AddColumn(out, 30, 8, vehiclesCruising);
@@ -115,7 +115,7 @@ void Writer::WriteHeader()
     AddColumn(out, 10, 8, "Time [s]");
     AddColumn(out, 20, 8, "Nb_Vehicles");
     AddColumn(out, 20, 8, "Nb_Cars");
-    AddColumn(out, 30, 8, "Mean Velocity [m/s]");
+    AddColumn(out, 30, 8, "Mean Velocity [km/h]");
     AddColumn(out, 30, 8, "Mean Vehicle Spacing [m]");
     AddColumn(out, 40, 8, "Mean Vehicle Density [unit/100m]");
     AddColumn(out, 30, 8, "Nb_Vehicles_Cruising");
@@ -140,6 +140,7 @@ float Writer::GetMeanDistance() const
     {
         if (vehicle->GetForwardVehicle() != nullptr)
         {
+            //std::cout << vehicle->GetForwardVehicle()->GetDistanceInLane() - vehicle->GetDistanceInLane() << std::endl;
             meanDistance += vehicle->GetForwardVehicle()->GetDistanceInLane() - vehicle->GetDistanceInLane();
             counter++;
         }
@@ -154,17 +155,19 @@ float Writer::GetMeanDistance() const
 
 float Writer::GetMeanVelocity() const
 {
+    int counter = 0;
     float meanVelocity = 0.;
     std::vector<Vehicle*> vehiclesOnLane = lane->GetVehiclesOnLane();
     
     for (Vehicle* vehicle : vehiclesOnLane)
     {
         meanVelocity += vehicle->GetCurrentVelocity();
+        counter++;
     } 
     
-    if (vehiclesOnLane.size() > 1)
+    if (counter != 0)
     {
-        meanVelocity /= vehiclesOnLane.size() - 1;
+        meanVelocity /= counter;
     }
 
     return meanVelocity;

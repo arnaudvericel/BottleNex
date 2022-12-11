@@ -12,5 +12,6 @@ void AddColumn(std::fstream& f, int width, int precision, T element)
 };
 
 bool fileExists(const std::string&);
+void DisplayLoadingBar(const float);
 
 #endif
