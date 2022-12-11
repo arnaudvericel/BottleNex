@@ -140,7 +140,6 @@ float Writer::GetMeanDistance() const
     {
         if (vehicle->GetForwardVehicle() != nullptr)
         {
-            //std::cout << vehicle->GetForwardVehicle()->GetDistanceInLane() - vehicle->GetDistanceInLane() << std::endl;
             meanDistance += vehicle->GetForwardVehicle()->GetDistanceInLane() - vehicle->GetDistanceInLane();
             counter++;
         }
