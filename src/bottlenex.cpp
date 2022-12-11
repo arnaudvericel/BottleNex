@@ -9,8 +9,7 @@ int main(int argc, char** argv)
     /* Run configuration */
     Config* myConfig = Config::GetConfig();
 
-    myConfig->AddLane(LaneData());
-    myConfig->AddLane(LaneData(4000, 110, 30, true, 1000, 1500, 90, 30));
+    myConfig->AddLane(LaneData(4000, 110, 70, true, 1000, 1500, 70, 40));
     myConfig->Set(Config::FloatSettings::MaxTimeMin, 5);
 
     myConfig->PrintConfig();

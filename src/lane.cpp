@@ -102,7 +102,7 @@ std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(float crossingPosition
     {
         if (vehicles[i]->GetDistanceInLane() > crossingPosition && vehicles[i+1]->GetDistanceInLane() < crossingPosition)
         {
-            insertIndex = i;
+            insertIndex = i + 1;
         }
     }
 
