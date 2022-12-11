@@ -12,24 +12,24 @@ private:
     float currentTime;
     float deltaTime;
     float maxTime;
-    int spawnStep;
+    std::vector<int> spawnStep;
     std::vector<Lane*> lanes;
     VehicleFactory* vehicleFactory;
 
-    bool CanSpawnVehicle(Lane*);
+    bool CanSpawnVehicle(const int, Lane*);
     void SpawnVehicles();
     bool IsDumpTimeStep() const;
 
 public:
-    Road(int, VehicleFactory*);
+    Road(VehicleFactory*);
     ~Road();
 
-    void Evolve();
+    void Evolve(bool displayLoadingBar=true);
     std::vector<Lane*> GetLanes() const;
     int GetNbLanes() const;
     float GetDeltaTime() const;
     float GetMaxTime() const;
-    int GetSpawnStep() const;
+    std::vector<int> GetSpawnStep() const;
     float GetCurrentTime() const;
 };
 
