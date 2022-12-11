@@ -122,7 +122,6 @@ void Config::InitSettings()
     Set(FloatSettings::CarDeceleration, constants::car::decelerationDefault);
     Set(FloatSettings::CarBrakingDistanceFactor, constants::car::brakingDistanceFactorDefault);
     Set(FloatSettings::CarAccelerationDistanceFactor, constants::car::accelDistanceFactorDefault);
-    Set(FloatSettings::CarCruisingDistanceFactor, constants::car::cruiseDistanceFactorDefault);
     Set(FloatSettings::CarSafeDistanceToEnterLaneFactor, constants::car::safeDistanceToEnterLaneFactorDefault);
     Set(FloatSettings::CarStartVelocityFactor, constants::car::startVelocityFactorDefault);
     Set(FloatSettings::FactoryFactorMin, constants::vehicle::factoryFactorMinDefault);

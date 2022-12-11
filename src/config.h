@@ -6,9 +6,9 @@
 #include <vector>
 
 const std::string ConfigFloatSettingsName[] = { "MaxTimeMin", "FactorCFL", "CarMaxVelocity", "CarLength", "CarAcceleration", 
-    "CarDeceleration", "CarBrakingDistanceFactor", "CarCruisingDistanceFactor", "CarAccelerationDistanceFactor", "CarStartVelocityFactor",
+    "CarDeceleration", "CarBrakingDistanceFactor", "CarAccelerationDistanceFactor", "CarStartVelocityFactor",
     "CarSafeDistanceToEnterLaneFactor", "FactoryFactorMin", "FactoryFactorMax" };
-const std::string ConfigFloatSettingsUnit[] = { "min", "/", "km/h", "m", "m/s^2", "m/s^2", "/", "/", "/", "/", "/", "/", "/" };
+const std::string ConfigFloatSettingsUnit[] = { "min", "/", "km/h", "m", "m/s^2", "m/s^2", "/", "/", "/", "/", "/", "/" };
 
 const std::string ConfigIntSettingsName[] = { "NbDumps" };
 const std::string ConfigIntSettingsUnit[] = { "/" };
@@ -47,7 +47,6 @@ public:
         CarAcceleration,
         CarDeceleration,
         CarBrakingDistanceFactor,
-        CarCruisingDistanceFactor,
         CarAccelerationDistanceFactor,
         CarStartVelocityFactor,
         CarSafeDistanceToEnterLaneFactor,

@@ -26,7 +26,6 @@ public:
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarAcceleration], constants::car::accelerationDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarAccelerationDistanceFactor], constants::car::accelDistanceFactorDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarBrakingDistanceFactor], constants::car::brakingDistanceFactorDefault);
-        TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarCruisingDistanceFactor], constants::car::cruiseDistanceFactorDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarDeceleration], constants::car::decelerationDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarLength], constants::car::lengthDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarMaxVelocity], constants::car::maxVelocityDefault);

@@ -36,10 +36,9 @@ namespace constants
     {
         const float maxVelocityDefault = 150.;
         const float lengthDefault = 5.;
-        const float decelerationDefault = 40.;
-        const float accelerationDefault = 10.;
+        const float decelerationDefault = 15.;
+        const float accelerationDefault = 5.;
         const float brakingDistanceFactorDefault = 2.5;
-        const float cruiseDistanceFactorDefault = 5.;
         const float accelDistanceFactorDefault = 7.5;
         const Motion startMotion = Motion::Accelerating;
         const float startVelocityFactorDefault = 0.5;
