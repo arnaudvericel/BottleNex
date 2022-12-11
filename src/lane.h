@@ -13,7 +13,7 @@ public:
     static int counter;
 
 protected:
-    float maxAllowedSpeed;
+    float limitVelocity;
     float length;
     float vehiclesPerMinute;
     int id;
@@ -43,9 +43,12 @@ public:
     Lane* GetParentLane() const;
 
     std::vector<Vehicle*> GetVehiclesOnLane() const;
+    bool IsOnLane(Vehicle*) const;
     int GetNbVehiclesOnLane() const;
-    float GetMaxAllowedSpeed() const;
+    float GetLimitVelocity() const;
     float GetLength() const;
+    float GetVehiclesPerMinute() const;
+    float GetJunctionPoint() const;
     int GetId() const;
     float GetFreeSpaceOnLane() const;
 };

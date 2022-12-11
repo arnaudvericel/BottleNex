@@ -49,7 +49,7 @@ float Vehicle::GetAcceleration() const
 void Vehicle::SetLane(Lane* newLane) 
 {
     lane = newLane;
-    maxVelocity = lane->GetMaxAllowedSpeed();
+    maxVelocity = lane->GetLimitVelocity();
 }
 
 Lane* Vehicle::GetLane() const 

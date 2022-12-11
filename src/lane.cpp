@@ -15,7 +15,7 @@ Lane::Lane()
 {
     parentLane = nullptr;
     junctionPoint = 0;
-    maxAllowedSpeed = constants::lane::limitVelocityDefault / 3.6;
+    limitVelocity = constants::lane::limitVelocityDefault / 3.6;
     length = constants::lane::lengthDefault;
     vehiclesPerMinute = constants::lane::vehiclesPerMinuteDefault;
     id = ++counter;
@@ -26,7 +26,7 @@ Lane::Lane(float len, float maxV, float vPerMin)
 {
     parentLane = nullptr;
     junctionPoint = 0;
-    maxAllowedSpeed = maxV / 3.6;
+    limitVelocity = maxV / 3.6;
     length = len;
     vehiclesPerMinute = vPerMin;
     id = ++counter;
@@ -42,6 +42,15 @@ Lane::~Lane()
             delete vehicle;
         }
     }
+}
+
+bool Lane::IsOnLane(Vehicle* vehicleToCheck) const
+{
+    for (Vehicle* vehicle : vehicles)
+    {
+        if (vehicle == vehicleToCheck) { return true; }
+    }
+    return false;
 }
 
 void Lane::MoveVehicles(const float& deltaTime)
@@ -78,6 +87,16 @@ std::vector<Vehicle*> Lane::GetVehiclesOnLane() const
 int Lane::GetNbVehiclesOnLane() const
 {
     return vehicles.size();
+}
+
+float Lane::GetVehiclesPerMinute() const
+{
+    return vehiclesPerMinute;
+}
+
+float Lane::GetJunctionPoint() const
+{
+    return junctionPoint;
 }
 
 std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(float crossingPosition)
@@ -185,9 +204,9 @@ void Lane::UpdateVehiclesLinklist()
     }
 }
 
-float Lane::GetMaxAllowedSpeed() const 
+float Lane::GetLimitVelocity() const 
 {
-    return maxAllowedSpeed;
+    return limitVelocity;
 }
 
 float Lane::GetLength() const
@@ -232,7 +251,7 @@ InputLane::InputLane(Lane* parent, float junPoin, float lengthm, float maxspeed,
 {
     parentLane = parent;
     junctionPoint = junPoin;
-    maxAllowedSpeed = maxspeed / 3.6;
+    limitVelocity = maxspeed / 3.6;
     length = lengthm;
     vehiclesPerMinute = vPerMin;
     writer.Init(this);
