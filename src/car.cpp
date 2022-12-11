@@ -6,7 +6,7 @@
 
 int Car::nbActiveCars = 0;
 
-Car::Car(Lane* lane, float initVelocityMultiplier) : Vehicle() // fixme : SetLane in vehicle constructor
+Car::Car(Lane* lane, float initVelocityMultiplier) : Vehicle()
 {
     Config* config = Config::GetConfig();
 
@@ -17,7 +17,6 @@ Car::Car(Lane* lane, float initVelocityMultiplier) : Vehicle() // fixme : SetLan
 
     motionState = constants::car::startMotion;
     currentVelocity = initVelocityMultiplier * (*config)[Config::FloatSettings::CarStartVelocityFactor] * maxVelocity;
-    //std::cout << currentVelocity << " " << currentVelocity * 3.6 << std::endl;
     nbActiveCars++;
 }
 
@@ -30,7 +29,22 @@ void Car::Brake(const float deltaTime)
 {
     if (currentVelocity > 0.)
     {
-        currentVelocity -= deceleration * deltaTime;
+        float decelMultiplier = 1;
+        if (forwardVehicle != nullptr)
+        {
+            Config* config = Config::GetConfig();
+            float distanceToNextVehicle = forwardVehicle->GetDistanceInLane() - distanceInLane - forwardVehicle->GetLength();
+            float distanceAtNextIteration = currentVelocity * deltaTime;
+            float brakingDistance = (*config)[Config::FloatSettings::CarBrakingDistanceFactor] * distanceAtNextIteration;
+
+            if (brakingDistance != 0)
+            {
+                // applies a smoother deceleration that is function of the distance to the next vehicle
+                decelMultiplier = (1 - distanceToNextVehicle / brakingDistance);
+            }
+        }
+
+        currentVelocity -= deceleration * decelMultiplier * deltaTime;
         if (currentVelocity < 0.)
         {
             currentVelocity = 0.;
@@ -65,15 +79,12 @@ void Car::EvaluateMotionState(const float deltaTime)
         //
         float distanceAtNextIteration = currentVelocity * deltaTime;
         float brakingDistance = (*config)[Config::FloatSettings::CarBrakingDistanceFactor] * distanceAtNextIteration;
-        float accelereationDistance = (*config)[Config::FloatSettings::CarAccelerationDistanceFactor] * distanceAtNextIteration;
-        float cruisingDistance = (*config)[Config::FloatSettings::CarCruisingDistanceFactor] * distanceAtNextIteration;
+        float accelerationDistance = (*config)[Config::FloatSettings::CarAccelerationDistanceFactor] * distanceAtNextIteration;
         float distanceToNextVehicle = forwardVehicle->GetDistanceInLane() - distanceInLane - forwardVehicle->GetLength();
 
-        //std::cout << deltaTime << " " << distanceAtNextIteration << " " << brakingDistance << " " << accelereationDistance << " " << cruisingDistance << " " << distanceToNextVehicle << std::endl;
-
         if (distanceToNextVehicle <= brakingDistance) { targetVelocity = 0.; }
-        else if (distanceToNextVehicle <= cruisingDistance) { targetVelocity = forwardVehicle->GetCurrentVelocity(); }
-        else if (distanceToNextVehicle > accelereationDistance) { targetVelocity = maxVelocity; }
+        else if (distanceToNextVehicle <= accelerationDistance) { targetVelocity = forwardVehicle->GetCurrentVelocity(); }
+        else { targetVelocity = maxVelocity; }
     }
     // "first" vehicle in lane -> wants to reach maxVelocity, no forward vehicle to slow it down
     else
