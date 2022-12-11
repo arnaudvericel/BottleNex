@@ -6,6 +6,7 @@
 #include "../src/config.h"
 #include "../src/vehicle_factory.h"
 #include "../src/vehicle.h"
+#include "../src/lane.h"
 
 typedef std::pair<int,int> initFactors;
 
@@ -29,15 +30,16 @@ public:
     void doBuildTest(int factorMin, int factorMax)
     {
         testFactory = new VehicleFactory(factorMin, factorMax);
+        Lane* testLane = new Lane();
 
         int nbVehiclesToSpawn = 300;
         float epsilon = 0.01;
 
         for (int i=0; i<nbVehiclesToSpawn; i++)
         {
-            Vehicle* spawnedVehicle = testFactory->Build(VehicleType::Car);
+            Vehicle* spawnedVehicle = testFactory->Build(testLane, VehicleType::Car);
             float vehicleInitVelocity = spawnedVehicle->GetCurrentVelocity();
-            float vehicleStandardInitVelocity = (*testConfig)[Config::FloatSettings::CarStartVelocityFactor] * (*testConfig)[Config::FloatSettings::CarMaxVelocity] / 3.6;
+            float vehicleStandardInitVelocity = (*testConfig)[Config::FloatSettings::CarStartVelocityFactor] * testLane->GetMaxAllowedSpeed();
 
             TS_ASSERT_LESS_THAN_EQUALS(vehicleInitVelocity, factorMax / 100. * vehicleStandardInitVelocity + epsilon);
             TS_ASSERT_LESS_THAN_EQUALS(factorMin / 100. * vehicleStandardInitVelocity - epsilon, vehicleInitVelocity);
@@ -46,6 +48,7 @@ public:
         }
 
         delete testFactory;
+        delete testLane;
     }
 
     // Testing default constructor

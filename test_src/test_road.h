@@ -4,6 +4,7 @@
 #include "../src/road.h"
 #include "../src/lane.h"
 #include "../src/config.h"
+#include "../src/constants.h"
 #include "../src/vehicle_factory.h"
 #include "../src/vehicle.h"
 
@@ -29,35 +30,33 @@ public:
     // Tests the initialization of the Road object
     void TestInit()
     {
-        int nbLanes = 3;
-        testRoad = new Road(nbLanes, testFactory);
+        testRoad = new Road(testFactory);
 
-        float roadDeltaTime = testRoad->GetDeltaTime();
-        int spawStepTheoric = (int)(60. / ((*testConfig)[Config::FloatSettings::VehiclesPerMinute] * roadDeltaTime));
-
-        TS_ASSERT_EQUALS(testRoad->GetNbLanes(), nbLanes);
-        TS_ASSERT(roadDeltaTime > 0);
+        TS_ASSERT_EQUALS(testRoad->GetNbLanes(), 0);
+        TS_ASSERT_EQUALS(testRoad->GetCurrentTime(), 0);
+        TS_ASSERT_EQUALS(testRoad->GetDeltaTime(), constants::sim::deltaTimeDefault);
         TS_ASSERT_EQUALS(testRoad->GetMaxTime(), (*testConfig)[Config::FloatSettings::MaxTimeMin] * 60);
-        TS_ASSERT_DELTA(testRoad->GetSpawnStep(), spawStepTheoric, 1);
+        TS_ASSERT_EQUALS(testRoad->GetSpawnStep().size(), 0);
 
         delete testRoad;
     }
 
-    // Tests that the Road state is consistent after a call to the Evolve method
-    void TestEvolve()
+    // Tests that the Road state is consistent after a call to the Evolve method, without input lane
+    void TestEvolveNoInput()
     {
-        float nbVehiclesPerMin = 10;
         float maxTimeMin = 2;
         float distanceToNextvehicle = 0;
+        int prevVehicleCounter = Vehicle::counter;
 
         testConfig->Set(Config::FloatSettings::MaxTimeMin, maxTimeMin);
-        testConfig->Set(Config::FloatSettings::VehiclesPerMinute, nbVehiclesPerMin);
+        testConfig->AddLane(LaneData());
 
-        testRoad = new Road(1, testFactory);
-        testRoad->Evolve();
+        testRoad = new Road(testFactory);
+        testRoad->Evolve(false);
 
         TS_ASSERT_DELTA(testRoad->GetCurrentTime(), testRoad->GetMaxTime(), testRoad->GetDeltaTime());
-        TS_ASSERT_DELTA(Vehicle::counter, maxTimeMin*nbVehiclesPerMin, 1);
+        TS_ASSERT_DELTA(Vehicle::counter - prevVehicleCounter, maxTimeMin*constants::lane::vehiclesPerMinuteDefault, 1);
+        TS_ASSERT_EQUALS(testRoad->GetNbLanes(), 1);
 
         for (Lane* lane : testRoad->GetLanes())
         {
@@ -66,7 +65,39 @@ public:
                 if (vehicle->GetForwardVehicle() != nullptr)
                 {
                     distanceToNextvehicle = vehicle->GetForwardVehicle()->GetDistanceInLane() - vehicle->GetDistanceInLane();
-                    TS_ASSERT(distanceToNextvehicle > 0);
+                    TS_ASSERT_LESS_THAN(0, distanceToNextvehicle);
+                }
+            }
+        }
+
+        delete testRoad;
+    }
+
+    // Tests that the Road state is consistent after a call to the Evolve method, with input lane
+    void TestEvolveWithInput()
+    {
+        float maxTimeMin = 5;
+        float distanceToNextvehicle = 0;
+        int prevVehicleCounter = Vehicle::counter;
+
+        testConfig->Set(Config::FloatSettings::MaxTimeMin, maxTimeMin);
+        testConfig->AddLane(LaneData(true));
+
+        testRoad = new Road(testFactory);
+        testRoad->Evolve(false);
+
+        TS_ASSERT_DELTA(testRoad->GetCurrentTime(), testRoad->GetMaxTime(), testRoad->GetDeltaTime());
+        TS_ASSERT_DELTA(Vehicle::counter - prevVehicleCounter, maxTimeMin*constants::lane::vehiclesPerMinuteDefault*2, 1);
+        TS_ASSERT_EQUALS(testRoad->GetNbLanes(), 2);
+
+        for (Lane* lane : testRoad->GetLanes())
+        {
+            for (Vehicle* vehicle : lane->GetVehiclesOnLane())
+            {
+                if (vehicle->GetForwardVehicle() != nullptr)
+                {
+                    distanceToNextvehicle = vehicle->GetForwardVehicle()->GetDistanceInLane() - vehicle->GetDistanceInLane();
+                    TS_ASSERT_LESS_THAN(0, distanceToNextvehicle); // FIXME
                 }
             }
         }
