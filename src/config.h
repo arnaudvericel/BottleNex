@@ -3,14 +3,37 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
-const std::string ConfigFloatSettingsName[] = { "MaxTimeMin", "FactorCFL", "LaneLimitVelocity", "LaneLength", "CarMaxVelocity", "CarLength", "CarAcceleration", 
-    "CarDeceleration", "VehiclesPerMinute", "CarBrakingDistanceFactor", "CarCruisingDistanceFactor", "CarAccelerationDistanceFactor", "CarStartVelocityFactor",
+const std::string ConfigFloatSettingsName[] = { "MaxTimeMin", "FactorCFL", "CarMaxVelocity", "CarLength", "CarAcceleration", 
+    "CarDeceleration", "CarBrakingDistanceFactor", "CarCruisingDistanceFactor", "CarAccelerationDistanceFactor", "CarStartVelocityFactor",
     "CarSafeDistanceToEnterLaneFactor", "FactoryFactorMin", "FactoryFactorMax" };
-const std::string ConfigFloatSettingsUnit[] = { "min", "/", "km/h", "m", "km/h", "m", "m/s^2", "m/s^2", "per min", "/", "/", "/", "/", "/", "/", "/" };
+const std::string ConfigFloatSettingsUnit[] = { "min", "/", "km/h", "m", "m/s^2", "m/s^2", "/", "/", "/", "/", "/", "/", "/" };
 
 const std::string ConfigIntSettingsName[] = { "NbDumps" };
 const std::string ConfigIntSettingsUnit[] = { "/" };
+
+struct LaneData
+{
+    float length;
+    float limitVelocity;
+    float vehiclesPerMinute;
+    bool hasInputLane;
+    float inputLaneLength;
+    float inputLaneLimitVelocity;
+    float inputLaneJunctionDistance;
+    float inputLaneVehiclesPerMinute;
+
+    // TODO : create constructor overloads to facilitate configuration
+    LaneData();
+    LaneData(bool hasInput);
+    LaneData(bool hasInput, float juncPoint);
+    LaneData(float len, float limitVel, float vPerMin);
+    LaneData(float len, float limitVel, float vPerMin, bool hasInput, float juncPoint);
+    LaneData(float len, float limitVel, float vPerMin, bool hasInput, float juncPoint, float inputLen, float inputLimitVel, float inputVPerMin);
+    ~LaneData() = default;
+    void Print();
+};
 
 class Config
 {
@@ -19,13 +42,10 @@ public:
     {
         MaxTimeMin,
         FactorCFL,
-        LaneLimitVelocity,
-        LaneLength,
         CarMaxVelocity,
         CarLength,
         CarAcceleration,
         CarDeceleration,
-        VehiclesPerMinute,
         CarBrakingDistanceFactor,
         CarCruisingDistanceFactor,
         CarAccelerationDistanceFactor,
@@ -45,6 +65,7 @@ private:
     FloatSettingsMap floatSettingsMap;
     IntSettingsMap intSettingsMap;
     static Config* instance;
+    std::vector<LaneData> lanesData;
     //
     Config();
     void InitSettings();
@@ -55,6 +76,8 @@ public:
     int& operator[](const IntSettings&);
     void Set(const FloatSettings&, const float&);
     void Set(const IntSettings&, const int&);
+    void AddLane(const LaneData&);
+    std::vector<LaneData> GetLanesData() const;
     static Config* GetConfig();
     static void LoadConfig(std::string);
     void PrintConfig();

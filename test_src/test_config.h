@@ -20,11 +20,9 @@ public:
     // Tests that every configuration field takes the correct value by default
     void TestDefault()
     {
+        TS_ASSERT_EQUALS(testConfig->GetLanesData().size(), 0);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::FactorCFL], constants::sim::factorCFLDefault);
-        TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::LaneLength], constants::lane::lengthDefault);
-        TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::LaneLimitVelocity], constants::lane::limitVelocityDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::MaxTimeMin], constants::sim::maxTimeMinDefault);
-        TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::VehiclesPerMinute], constants::lane::vehiclesPerMinuteDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarAcceleration], constants::car::accelerationDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarAccelerationDistanceFactor], constants::car::accelDistanceFactorDefault);
         TS_ASSERT_EQUALS((*testConfig)[Config::FloatSettings::CarBrakingDistanceFactor], constants::car::brakingDistanceFactorDefault);
@@ -37,7 +35,7 @@ public:
         TS_ASSERT_EQUALS((*testConfig)[Config::IntSettings::NbDumps], constants::sim::nbDumpsDefault);
     }
 
-    // Tests the Set method that permits fields configurationon the fly
+    // Tests the Set method that permits fields configuration on the fly
     void TestSet()
     {
         for (Config::FloatSettings setting=Config::FloatSettings::MaxTimeMin; setting!= Config::FloatSettings::CarSafeDistanceToEnterLaneFactor; ++setting)
@@ -78,6 +76,7 @@ public:
         TestDefault();
     }
 
+    // Tests configuration loading from input files
     void TestLoad()
     {
         TS_SKIP("TODO");
