@@ -39,7 +39,7 @@ public:
         {
             Vehicle* spawnedVehicle = testFactory->Build(testLane, VehicleType::Car);
             float vehicleInitVelocity = spawnedVehicle->GetCurrentVelocity();
-            float vehicleStandardInitVelocity = (*testConfig)[Config::FloatSettings::CarStartVelocityFactor] * testLane->GetMaxAllowedSpeed();
+            float vehicleStandardInitVelocity = (*testConfig)[Config::FloatSettings::CarStartVelocityFactor] * testLane->GetLimitVelocity();
 
             TS_ASSERT_LESS_THAN_EQUALS(vehicleInitVelocity, factorMax / 100. * vehicleStandardInitVelocity + epsilon);
             TS_ASSERT_LESS_THAN_EQUALS(factorMin / 100. * vehicleStandardInitVelocity - epsilon, vehicleInitVelocity);
