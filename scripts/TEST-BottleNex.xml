@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite name="BottleNex" date="Sun Dec 11 22:39:46 2022" tests="9" errors="0" failures="0" time="0" >
+<testsuite name="BottleNex" date="Sun Dec 11 23:35:59 2022" tests="13" errors="0" failures="0" time="0" >
     <testcase classname="TestRoad" name="TestInit" line="31" />
     <testcase classname="TestRoad" name="TestEvolveNoInput" line="45" />
     <testcase classname="TestRoad" name="TestEvolveWithInput" line="77" />
@@ -15,4 +15,8 @@ s</system-out>
     </testcase>
     <testcase classname="TestVehicleFactory" name="TestDefault" line="55" />
     <testcase classname="TestVehicleFactory" name="TestBuild" line="66" />
+    <testcase classname="TestLane" name="TestDefault" line="24" />
+    <testcase classname="TestLane" name="TestInputDefault" line="40" />
+    <testcase classname="TestLane" name="TestDeleteVehicle" line="59" />
+    <testcase classname="TestLane" name="TestMoveVehicle" line="83" />
 </testsuite>
