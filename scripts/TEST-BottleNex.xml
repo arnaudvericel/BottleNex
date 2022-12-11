@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite name="BottleNex" date="Sat Dec 10 10:50:55 2022" tests="8" errors="0" failures="0" time="0" >
-    <testcase classname="TestRoad" name="TestInit" line="30" />
-    <testcase classname="TestRoad" name="TestEvolve" line="47" />
+<testsuite name="BottleNex" date="Sun Dec 11 22:39:46 2022" tests="9" errors="0" failures="0" time="0" >
+    <testcase classname="TestRoad" name="TestInit" line="31" />
+    <testcase classname="TestRoad" name="TestEvolveNoInput" line="45" />
+    <testcase classname="TestRoad" name="TestEvolveWithInput" line="77" />
     <testcase classname="TestConfig" name="TestDefault" line="21" />
-    <testcase classname="TestConfig" name="TestSet" line="41" />
-    <testcase classname="TestConfig" name="TestReset" line="58" />
-    <testcase classname="TestConfig" name="TestLoad" line="81">
-        <skipped file="/Users/Arnaud/Documents/Codes.nosync/BottleNex/test_src/test_config.h" line="83" type="skipped" >Test skipped: TODO</skipped>
+    <testcase classname="TestConfig" name="TestSet" line="38" />
+    <testcase classname="TestConfig" name="TestReset" line="55" />
+    <testcase classname="TestConfig" name="TestLoad" line="79">
+        <skipped file="/Users/Arnaud/Documents/Codes.nosync/BottleNex/test_src/test_config.h" line="81" type="skipped" >Test skipped: TODO</skipped>
         <system-out >
 In TestConfig::TestLoad:
-/Users/Arnaud/Documents/Codes.nosync/BottleNex/test_src/test_config.h:83: Warning: Test skipped: TODO
+/Users/Arnaud/Documents/Codes.nosync/BottleNex/test_src/test_config.h:81: Warning: Test skipped: TODO
 s</system-out>
     </testcase>
-    <testcase classname="TestVehicleFactory" name="TestDefault" line="52" />
-    <testcase classname="TestVehicleFactory" name="TestBuild" line="63" />
+    <testcase classname="TestVehicleFactory" name="TestDefault" line="55" />
+    <testcase classname="TestVehicleFactory" name="TestBuild" line="66" />
 </testsuite>
