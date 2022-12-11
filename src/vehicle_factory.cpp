@@ -11,7 +11,7 @@ VehicleFactory::VehicleFactory()
     srand(time(NULL));
     Config* config = Config::GetConfig();
     initVelocityFactorMin = (*config)[Config::FloatSettings::FactoryFactorMin]; 
-    initVelocityFactorMax = (*config)[Config::FloatSettings::FactoryFactorMax]; ;
+    initVelocityFactorMax = (*config)[Config::FloatSettings::FactoryFactorMax];
 }
 
 VehicleFactory::VehicleFactory(int initFactorMin, int initFactorMax)
