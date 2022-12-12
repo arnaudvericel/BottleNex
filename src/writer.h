@@ -19,9 +19,6 @@ private:
 
     void InitVehiclesStats();
     void FetchVehiclesStats();
-    float GetMeanDensity() const;
-    float GetMeanDistance() const;
-    float GetMeanVelocity() const;
 
 public:
     Writer();
@@ -29,6 +26,11 @@ public:
     void WriteStep(const float);
     void WriteHeader();
     void Init(Lane*);
+    float GetMeanDensity() const;
+    float GetMeanDistance() const;
+    float GetMeanVelocity() const;
+    std::string GetFileName() const;
+    Lane* GetLane() const;
 };
 
 #endif

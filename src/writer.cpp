@@ -171,3 +171,13 @@ float Writer::GetMeanVelocity() const
 
     return meanVelocity;
 }
+
+std::string Writer::GetFileName() const
+{
+    return fileName;
+}
+
+Lane* Writer::GetLane() const
+{
+    return lane;
+}

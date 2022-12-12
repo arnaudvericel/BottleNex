@@ -19,7 +19,7 @@ export PATH=$CXXTEST/bin:$PATH
 
 # todo : add runner options
 # @generating test runner file
-cxxtestgen --xunit-printer -w BottleNex --have-eh -o $TEST_DIR/$RUNNER_CPP $TEST_DIR/test_road.h $TEST_DIR/test_config.h $TEST_DIR/test_vehicle_factory.h $TEST_DIR/test_lane.h
+cxxtestgen --xunit-printer -w BottleNex --have-eh -o $TEST_DIR/$RUNNER_CPP $TEST_DIR/test_road.h $TEST_DIR/test_config.h $TEST_DIR/test_vehicle_factory.h $TEST_DIR/test_lane.h $TEST_DIR/test_writer.h
 
 # todo : refactor
 # @compile test runner file
