@@ -103,7 +103,6 @@ std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(float crossingPosition
 {
     int insertIndex = 0; // we start the search at the very first vehicle on lane (with largest distance on lane)
     
-    // treating particular cases : inserted vehicle becomes first or last vehicle on lane
     if (vehicles.size() > 0)
     {
         if (crossingPosition > vehicles[0]->GetDistanceInLane())
@@ -112,19 +111,19 @@ std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(float crossingPosition
         }
         else if (crossingPosition < vehicles[vehicles.size() - 1]->GetDistanceInLane())
         {
-            insertIndex = vehicles.size() - 1;
+            insertIndex = vehicles.size();
         }
-    }
-
-    // treating all other cases
-    for (int i=0; i<vehicles.size()-1; i++)
-    {
-        if (vehicles[i]->GetDistanceInLane() > crossingPosition && vehicles[i+1]->GetDistanceInLane() < crossingPosition)
+        else
         {
-            insertIndex = i + 1;
+            for (int i=0; i<vehicles.size()-1; i++)
+            {
+                if (vehicles[i]->GetDistanceInLane() > crossingPosition && vehicles[i+1]->GetDistanceInLane() < crossingPosition)
+                {
+                    insertIndex = i + 1;
+                }
+            }
         }
     }
-
     return vehicles.begin() + insertIndex;
 }
 
@@ -148,6 +147,7 @@ std::vector<Vehicle*>::iterator Lane::FindVehicleIterIndex(const Vehicle* vehicl
             return it;
         }
     }
+    // todo : throw exception here
 }
 
 void Lane::RemoveVehicle(Vehicle* vehicle)

@@ -16,6 +16,9 @@ Vehicle::Vehicle()
     id = ++counter;
     nbActiveVehicles++;
     //
+    backwardVehicle = nullptr;
+    forwardVehicle = nullptr;
+    //
     length = 0;
     maxVelocity = 0;
     targetVelocity = 0;

@@ -70,6 +70,7 @@ public:
             counter--;
             TS_ASSERT(!testLane->IsOnLane(vehicle));
             TS_ASSERT_EQUALS(testLane->GetNbVehiclesOnLane(), counter);
+            delete vehicle;
         }
     }
 
@@ -113,6 +114,20 @@ public:
         TS_ASSERT(testLane->IsOnLane(testCar));
         TS_ASSERT_EQUALS(testLane->GetNbVehiclesOnLane(), 1);
         TS_ASSERT_EQUALS(testInputLane->GetNbVehiclesOnLane(), 0);
+
+        testCar->SetDistanceInlane(testLane->GetLength() * 0.75);
+
+        Vehicle* anotherTestCar = new Car(testInputLane, 1.);
+        testInputLane->InsertVehicle(anotherTestCar);
+
+        testInputLane->TransferVehicleToParentLane(anotherTestCar);
+
+        TS_ASSERT_EQUALS(testInputLane->GetNbVehiclesOnLane(), 0);
+        TS_ASSERT_EQUALS(testLane->GetNbVehiclesOnLane(), 2);
+        TS_ASSERT(testLane->IsOnLane(anotherTestCar));
+        TS_ASSERT_EQUALS(testLane->GetVehiclesOnLane()[0], testCar);
+        TS_ASSERT_EQUALS(testLane->GetVehiclesOnLane()[1], anotherTestCar);
+        TS_ASSERT_LESS_THAN(anotherTestCar->GetDistanceInLane(), testCar->GetDistanceInLane());
 
         delete testInputLane;
     }
