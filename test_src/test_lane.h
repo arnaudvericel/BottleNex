@@ -9,22 +9,23 @@ class TestLane : public CxxTest::TestSuite
 {
 public:
     Config* testConfig;
+    Lane* testLane;
 
     void setUp()
     {
+        testLane = new Lane();
         testConfig = Config::GetConfig();
     }
 
     void tearDown()
     {
+        delete testLane;
         delete testConfig;
     }
 
     // Tests the default behaviour of the Lane object
     void TestDefault()
     {
-        Lane* testLane = new Lane();
-
         TS_ASSERT_EQUALS(testLane->GetLength(), constants::lane::lengthDefault);
         TS_ASSERT_DELTA(testLane->GetLimitVelocity(), constants::lane::limitVelocityDefault / 3.6, 0.001);
         TS_ASSERT_EQUALS(testLane->GetVehiclesPerMinute(), constants::lane::vehiclesPerMinuteDefault);
@@ -32,34 +33,28 @@ public:
         TS_ASSERT(!testLane->HasParentLane());
         TS_ASSERT_EQUALS(testLane->GetNbVehiclesOnLane(), 0);
         TS_ASSERT_EQUALS(testLane->GetJunctionPoint(), 0);
-
-        delete testLane;
     }
 
     // Tests the default behaviour of the Input Lane object
     void TestInputDefault()
     {
-        Lane* testParentLane = new Lane();
-        float junPoint = testParentLane->GetLength() / 2.;
-        InputLane* testInputLane = new InputLane(testParentLane, junPoint, testParentLane->GetLength(), testParentLane->GetLimitVelocity()*3.6, testParentLane->GetVehiclesPerMinute());
+        float junPoint = testLane->GetLength() / 2.;
+        Lane* testInputLane = new InputLane(testLane, junPoint, testLane->GetLength(), testLane->GetLimitVelocity()*3.6, testLane->GetVehiclesPerMinute());
 
-        TS_ASSERT_EQUALS(testInputLane->GetLength(), testParentLane->GetLength());
-        TS_ASSERT_EQUALS(testInputLane->GetLimitVelocity(), testParentLane->GetLimitVelocity());
-        TS_ASSERT_EQUALS(testInputLane->GetVehiclesPerMinute(), testParentLane->GetVehiclesPerMinute());
-        TS_ASSERT_EQUALS(testInputLane->GetFreeSpaceOnLane(), testInputLane->GetLength());
-        TS_ASSERT_EQUALS(testInputLane->GetJunctionPoint(), testParentLane->GetLength() / 2.);
+        TS_ASSERT_EQUALS(testInputLane->GetLength(), testLane->GetLength());
+        TS_ASSERT_EQUALS(testInputLane->GetLimitVelocity(), testLane->GetLimitVelocity());
+        TS_ASSERT_EQUALS(testInputLane->GetVehiclesPerMinute(), testLane->GetVehiclesPerMinute());
+        TS_ASSERT_EQUALS(testInputLane->GetFreeSpaceOnLane(), testLane->GetLength());
+        TS_ASSERT_EQUALS(testInputLane->GetJunctionPoint(), testLane->GetLength() / 2.);
         TS_ASSERT(testInputLane->HasParentLane());
         TS_ASSERT_EQUALS(testInputLane->GetNbVehiclesOnLane(), 0);
 
         delete testInputLane;
-        delete testParentLane;
     }
 
     // Tests the deletion of a vehicle on lane
     void TestDeleteVehicle()
     {
-        Lane* testLane = new Lane();
-
         for (int i=0; i<10; i++)
         {
             Vehicle* newCar = new Car(testLane, 1);
@@ -76,13 +71,11 @@ public:
             TS_ASSERT(!testLane->IsOnLane(vehicle));
             TS_ASSERT_EQUALS(testLane->GetNbVehiclesOnLane(), counter);
         }
-
-        delete testLane;
     }
 
+    // Tests that the vehicles move correctly on lane
     void TestMoveVehicle()
     {
-        Lane* testLane = new Lane();
         Vehicle* testCar = new Car(testLane, 1);
         testLane->InsertVehicle(testCar);
 
@@ -100,6 +93,27 @@ public:
         }
     }
 
-    // TestInsertVehicle
-    // TestTransfertVehicleToParent
+    // Tests that vehicles on an input lane transfers correctly to their parent lane
+    void TestTransfertVehicleToParent()
+    {
+        float junPoint = testLane->GetLength() / 2.;
+        Lane* testInputLane = new InputLane(testLane, junPoint, testLane->GetLength(), testLane->GetLimitVelocity()*3.6, testLane->GetVehiclesPerMinute());
+        Vehicle* testCar = new Car(testInputLane, 1.);
+
+        testInputLane->InsertVehicle(testCar);
+
+        TS_ASSERT(testInputLane->IsOnLane(testCar));
+        TS_ASSERT(!testLane->IsOnLane(testCar));
+        TS_ASSERT_EQUALS(testLane->GetNbVehiclesOnLane(), 0);
+        TS_ASSERT_EQUALS(testInputLane->GetNbVehiclesOnLane(), 1);
+        
+        testInputLane->TransferVehicleToParentLane(testCar);
+
+        TS_ASSERT(!testInputLane->IsOnLane(testCar));
+        TS_ASSERT(testLane->IsOnLane(testCar));
+        TS_ASSERT_EQUALS(testLane->GetNbVehiclesOnLane(), 1);
+        TS_ASSERT_EQUALS(testInputLane->GetNbVehiclesOnLane(), 0);
+
+        delete testInputLane;
+    }
 };
