@@ -5,10 +5,10 @@
 #include <map>
 #include <vector>
 
-const std::string ConfigFloatSettingsName[] = { "MaxTimeMin", "FactorCFL", "CarMaxVelocity", "CarLength", "CarAcceleration", 
+const std::string ConfigFloatSettingsName[] = { "MaxTimeMin", "FactorCFL", "CarLength", "CarAcceleration", 
     "CarDeceleration", "CarBrakingDistanceFactor", "CarAccelerationDistanceFactor", "CarStartVelocityFactor",
     "CarSafeDistanceToEnterLaneFactor", "FactoryFactorMin", "FactoryFactorMax" };
-const std::string ConfigFloatSettingsUnit[] = { "min", "/", "km/h", "m", "m/s^2", "m/s^2", "/", "/", "/", "/", "/", "/" };
+const std::string ConfigFloatSettingsUnit[] = { "min", "/", "m", "m/s^2", "m/s^2", "/", "/", "/", "/", "/", "/" };
 
 const std::string ConfigIntSettingsName[] = { "NbDumps" };
 const std::string ConfigIntSettingsUnit[] = { "/" };
@@ -35,6 +35,8 @@ struct LaneData
     void Print();
 };
 
+class ConfigReader;
+
 class Config
 {
 public:
@@ -42,7 +44,6 @@ public:
     {
         MaxTimeMin,
         FactorCFL,
-        CarMaxVelocity,
         CarLength,
         CarAcceleration,
         CarDeceleration,
@@ -65,6 +66,7 @@ private:
     IntSettingsMap intSettingsMap;
     static Config* instance;
     std::vector<LaneData> lanesData;
+    ConfigReader* reader;
     //
     Config();
     void InitSettings();
@@ -80,7 +82,7 @@ public:
     std::vector<LaneData> GetLanesData() const;
     static Config* GetConfig();
     //
-    static void LoadConfig(std::string);
+    static void LoadConfig(const std::string&);
     void PrintConfig();
 };
 

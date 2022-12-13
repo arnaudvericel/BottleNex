@@ -1,5 +1,6 @@
 #include <sys/stat.h>
 #include <iostream>
+#include <sstream>
 
 #include "utils.h"
 
@@ -24,4 +25,18 @@ void DisplayLoadingBar(const float progress)
     std::cout.flush();
 
     if ((int)progress == 1) { std::cout << std::endl; }
+}
+
+std::vector<std::string> GetSplittedLine(const std::string& line)
+{
+    std::istringstream ssLine(line);
+    std::string elem;
+    std::vector<std::string> toReturn;
+ 
+    while (getline(ssLine, elem, ';'))
+    {
+        toReturn.push_back(elem);
+    }
+
+    return toReturn;
 }

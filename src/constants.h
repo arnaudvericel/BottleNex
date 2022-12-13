@@ -34,7 +34,6 @@ namespace constants
 
     namespace car
     {
-        const float maxVelocityDefault = 150.;
         const float lengthDefault = 5.;
         const float decelerationDefault = 15.;
         const float accelerationDefault = 5.;

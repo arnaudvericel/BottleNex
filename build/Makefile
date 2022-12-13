@@ -5,8 +5,8 @@ SDIR = ../src
 
 ###################################
 
-bottlenex: bottlenex.o vehicle.o lane.o car.o road.o utils.o writer.o config.o vehicle_factory.o
-	$(CC) $(FLAGS) -o bottlenex.exe bottlenex.o vehicle.o lane.o car.o road.o utils.o writer.o config.o vehicle_factory.o
+bottlenex: bottlenex.o vehicle.o lane.o car.o road.o utils.o writer.o config.o vehicle_factory.o config_reader.o
+	$(CC) $(FLAGS) -o bottlenex.exe bottlenex.o vehicle.o lane.o car.o road.o utils.o writer.o config.o vehicle_factory.o config_reader.o
 
 vehicle.o: $(SDIR)/vehicle.cpp $(SDIR)/vehicle.h
 	$(CC) $(FLAGS) -o vehicle.o -c $(SDIR)/vehicle.cpp
@@ -34,6 +34,9 @@ config.o: $(SDIR)/config.cpp $(SDIR)/config.h
 
 vehicle_factory.o: $(SDIR)/vehicle_factory.cpp $(SDIR)/vehicle_factory.h
 	$(CC) $(FLAGS) -o vehicle_factory.o -c $(SDIR)/vehicle_factory.cpp
+
+config_reader.o: $(SDIR)/config_reader.cpp $(SDIR)/config_reader.h
+	$(CC) $(FLAGS) -o config_reader.o -c $(SDIR)/config_reader.cpp
 
 ###################################
 

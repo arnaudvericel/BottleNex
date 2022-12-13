@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "road.h"
 #include "vehicle_factory.h"
@@ -6,19 +7,24 @@
 
 int main(int argc, char** argv)
 {
-    /* Run configuration */
+    if (argc != 2)
+    {
+        std::cout << "Usage : ./bottlenex <config_file>" << std::endl;
+        return 0;
+    }
+
+    std::string configFile = argv[argc-1];
+
+    /* Set and print configuration */
     Config* myConfig = Config::GetConfig();
-
-    myConfig->AddLane(LaneData(4000, 110, 70, true, 1000, 1500, 70, 40));
-    myConfig->Set(Config::FloatSettings::MaxTimeMin, 5);
-
+    Config::LoadConfig(configFile);
     myConfig->PrintConfig();
 
-    /* Instanciation of the Road object with its own vehicle factory */
+    /* Instanciation of the Road object and its own vehicle factory */
     VehicleFactory* factory = new VehicleFactory();
     Road* road = new Road(factory);
 
-    /* Road evolution */
+    /* Launching the simulation */
     road->Evolve();
 
     /* End of the run */

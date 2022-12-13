@@ -1,5 +1,6 @@
 #include "config.h"
 #include "constants.h"
+#include "config_reader.h"
 
 #include <iostream>
 #include <fstream>
@@ -69,12 +70,14 @@ Config* Config::instance = nullptr;
 
 Config::Config()
 {
+    reader = new ConfigReader(this);
     InitSettings();
 }
 
 Config::~Config()
 {
     instance = nullptr;
+    delete reader;
 }
 
 float& Config::operator[](const FloatSettings& settingName)
@@ -96,9 +99,17 @@ Config* Config::GetConfig()
     return instance;
 }
 
-void Config::LoadConfig(std::string fileName)
+void Config::LoadConfig(const std::string& fileName)
 {
-    // todo : load fileName file to Config
+    std::cout << "Loading Config from file " << fileName << std::endl;
+    if (instance != nullptr)
+    {
+        instance->reader->Read(fileName);
+    }
+    else
+    {
+        GetConfig()->reader->Read(fileName);
+    }
 }
 
 void Config::Set(const IntSettings& settingName, const int& value)
@@ -116,7 +127,6 @@ void Config::InitSettings()
     // float settings
     Set(FloatSettings::MaxTimeMin, constants::sim::maxTimeMinDefault);
     Set(FloatSettings::FactorCFL, constants::sim::factorCFLDefault);
-    Set(FloatSettings::CarMaxVelocity, constants::car::maxVelocityDefault);
     Set(FloatSettings::CarLength, constants::car::lengthDefault);
     Set(FloatSettings::CarAcceleration, constants::car::accelerationDefault);
     Set(FloatSettings::CarDeceleration, constants::car::decelerationDefault);

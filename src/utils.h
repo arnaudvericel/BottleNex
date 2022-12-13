@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
+#include <vector>
 
 template<typename T>
 void AddColumn(std::fstream& f, int width, int precision, T element) 
@@ -13,5 +14,6 @@ void AddColumn(std::fstream& f, int width, int precision, T element)
 
 bool fileExists(const std::string&);
 void DisplayLoadingBar(const float);
+std::vector<std::string> GetSplittedLine(const std::string& line);
 
 #endif
