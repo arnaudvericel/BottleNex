@@ -82,7 +82,7 @@ public:
     std::vector<LaneData> GetLanesData() const;
     static Config* GetConfig();
     //
-    static void LoadConfig(const std::string& fileName, const bool printInfo=false);
+    static void LoadConfig(const std::string& fileName, const bool printInfo=true);
     void PrintConfig();
 };
 
