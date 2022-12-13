@@ -25,6 +25,30 @@ Car::~Car()
     nbActiveCars--;
 }
 
+void Car::EvaluateMotionState(const float deltaTime)
+{
+    if (forwardVehicle != nullptr)
+    {
+        Config* config = Config::GetConfig();
+        //
+        float distanceAtNextIteration = currentVelocity * deltaTime;
+        float brakingDistance = (*config)[Config::FloatSettings::CarBrakingDistanceFactor] * distanceAtNextIteration;
+        float accelerationDistance = (*config)[Config::FloatSettings::CarAccelerationDistanceFactor] * distanceAtNextIteration;
+        float distanceToNextVehicle = forwardVehicle->GetDistanceInLane() - distanceInLane - forwardVehicle->GetLength();
+
+        if (distanceToNextVehicle <= brakingDistance) { targetVelocity = 0.; }
+        else if (distanceToNextVehicle <= accelerationDistance) { targetVelocity = forwardVehicle->GetCurrentVelocity(); }
+        else { targetVelocity = maxVelocity; }
+    }
+    // "first" vehicle in lane -> wants to reach maxVelocity, no forward vehicle to slow it down
+    else
+    {
+        targetVelocity = maxVelocity;
+    }
+
+    UpdateMotionState();
+}
+
 void Car::Brake(const float deltaTime)
 {
     if (currentVelocity > 0.)
@@ -69,28 +93,4 @@ void Car::Accelerate(const float deltaTime)
         }
     }
     UpdatePosition(deltaTime);
-}
-
-void Car::EvaluateMotionState(const float deltaTime)
-{
-    if (forwardVehicle != nullptr)
-    {
-        Config* config = Config::GetConfig();
-        //
-        float distanceAtNextIteration = currentVelocity * deltaTime;
-        float brakingDistance = (*config)[Config::FloatSettings::CarBrakingDistanceFactor] * distanceAtNextIteration;
-        float accelerationDistance = (*config)[Config::FloatSettings::CarAccelerationDistanceFactor] * distanceAtNextIteration;
-        float distanceToNextVehicle = forwardVehicle->GetDistanceInLane() - distanceInLane - forwardVehicle->GetLength();
-
-        if (distanceToNextVehicle <= brakingDistance) { targetVelocity = 0.; }
-        else if (distanceToNextVehicle <= accelerationDistance) { targetVelocity = forwardVehicle->GetCurrentVelocity(); }
-        else { targetVelocity = maxVelocity; }
-    }
-    // "first" vehicle in lane -> wants to reach maxVelocity, no forward vehicle to slow it down
-    else
-    {
-        targetVelocity = maxVelocity;
-    }
-
-    UpdateMotionState();
 }

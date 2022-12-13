@@ -76,8 +76,10 @@ public:
     void Set(const FloatSettings&, const float&);
     void Set(const IntSettings&, const int&);
     void AddLane(const LaneData&);
+    //
     std::vector<LaneData> GetLanesData() const;
     static Config* GetConfig();
+    //
     static void LoadConfig(std::string);
     void PrintConfig();
 };

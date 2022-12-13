@@ -6,11 +6,6 @@
 int Vehicle::nbActiveVehicles = 0;
 int Vehicle::counter = 0;
 
-Vehicle::~Vehicle()
-{
-    nbActiveVehicles--;
-}
-
 Vehicle::Vehicle()
 {
     id = ++counter;
@@ -29,106 +24,9 @@ Vehicle::Vehicle()
     distanceInLane = 0;
 }
 
-float Vehicle::GetLength() const
-{ 
-    return length; 
-}
-
-float Vehicle::GetCurrentVelocity() const 
-{ 
-    return currentVelocity;
-}
-
-float Vehicle::GetMaxVelocity() const 
-{ 
-    return maxVelocity; 
-}
-
-float Vehicle::GetAcceleration() const 
-{ 
-    return acceleration;
-}
-
-float Vehicle::GetDeceleration() const 
-{ 
-    return deceleration;
-}
-
-void Vehicle::SetLane(Lane* newLane) 
+Vehicle::~Vehicle()
 {
-    lane = newLane;
-    maxVelocity = lane->GetLimitVelocity();
-}
-
-Lane* Vehicle::GetLane() const 
-{ 
-    return lane; 
-}
-
-float Vehicle::GetDistanceInLane() const 
-{ 
-    return distanceInLane; 
-}
-
-void Vehicle::SetForwardVehicle(Vehicle* vehicle)
-{
-    forwardVehicle = vehicle;
-
-    if (vehicle != nullptr && vehicle->GetBackwardVehicle() != this)
-    {
-        vehicle->SetBackwardVehicle(this);
-    }
-}
-
-Vehicle* Vehicle::GetForwardVehicle() const
-{
-    return forwardVehicle;
-}
-
-int Vehicle::GetId() const
-{
-    return id;
-}
-
-void Vehicle::SetBackwardVehicle(Vehicle* vehicle)
-{
-    backwardVehicle = vehicle;
-
-    if (vehicle != nullptr && vehicle->GetForwardVehicle() != this)
-    {
-        vehicle->SetForwardVehicle(this);
-    }
-}
-
-Vehicle* Vehicle::GetBackwardVehicle() const
-{
-    return backwardVehicle;
-}
-
-Motion Vehicle::GetMotionState() const
-{
-    return motionState;
-}
-
-void Vehicle::UpdatePosition(const float deltaTime)
-{
-    distanceInLane += currentVelocity * deltaTime;
-}
-
-void Vehicle::UpdateMotionState()
-{
-    if (currentVelocity > targetVelocity)
-    {
-        motionState = Motion::Braking;
-    }
-    else if (currentVelocity == targetVelocity)
-    {
-        motionState = Motion::Cruising;
-    }
-    else
-    {
-        motionState = Motion::Accelerating;
-    }
+    nbActiveVehicles--;
 }
 
 void Vehicle::Move(const float deltaTime)
@@ -167,7 +65,109 @@ void Vehicle::Move(const float deltaTime)
 
 }
 
+void Vehicle::UpdateMotionState()
+{
+    if (currentVelocity > targetVelocity)
+    {
+        motionState = Motion::Braking;
+    }
+    else if (currentVelocity == targetVelocity)
+    {
+        motionState = Motion::Cruising;
+    }
+    else
+    {
+        motionState = Motion::Accelerating;
+    }
+}
+
+void Vehicle::UpdatePosition(const float deltaTime)
+{
+    distanceInLane += currentVelocity * deltaTime;
+}
+
+void Vehicle::SetLane(Lane* newLane) 
+{
+    lane = newLane;
+    maxVelocity = lane->GetLimitVelocity();
+}
+
+void Vehicle::SetForwardVehicle(Vehicle* vehicle)
+{
+    forwardVehicle = vehicle;
+
+    if (vehicle != nullptr && vehicle->GetBackwardVehicle() != this)
+    {
+        vehicle->SetBackwardVehicle(this);
+    }
+}
+
+void Vehicle::SetBackwardVehicle(Vehicle* vehicle)
+{
+    backwardVehicle = vehicle;
+
+    if (vehicle != nullptr && vehicle->GetForwardVehicle() != this)
+    {
+        vehicle->SetForwardVehicle(this);
+    }
+}
+
 void Vehicle::SetDistanceInlane(const float dist)
 {
     distanceInLane = dist;
+}
+
+float Vehicle::GetLength() const
+{ 
+    return length; 
+}
+
+float Vehicle::GetCurrentVelocity() const 
+{ 
+    return currentVelocity;
+}
+
+float Vehicle::GetMaxVelocity() const 
+{ 
+    return maxVelocity; 
+}
+
+float Vehicle::GetAcceleration() const 
+{ 
+    return acceleration;
+}
+
+float Vehicle::GetDeceleration() const 
+{ 
+    return deceleration;
+}
+
+Lane* Vehicle::GetLane() const 
+{ 
+    return lane; 
+}
+
+float Vehicle::GetDistanceInLane() const 
+{ 
+    return distanceInLane; 
+}
+
+Vehicle* Vehicle::GetForwardVehicle() const
+{
+    return forwardVehicle;
+}
+
+int Vehicle::GetId() const
+{
+    return id;
+}
+
+Vehicle* Vehicle::GetBackwardVehicle() const
+{
+    return backwardVehicle;
+}
+
+Motion Vehicle::GetMotionState() const
+{
+    return motionState;
 }

@@ -17,11 +17,12 @@ protected:
     float length;
     float vehiclesPerMinute;
     int id;
+    //
     Writer writer = Writer();
     std::vector<Vehicle*> vehicles;
     Lane* parentLane;
     float junctionPoint;
-
+    //
     int FindVehicleIndex(const Vehicle*);
     std::vector<Vehicle*>::iterator FindVehicleIterIndex(const Vehicle*);
     void UpdateVehiclesLinklist();
@@ -36,14 +37,14 @@ public:
     void RemoveVehicle(Vehicle*);
     void InsertVehicle(Vehicle*);
     void InsertVehicle(Vehicle*, std::vector<Vehicle*>::iterator);
+    std::vector<Vehicle*>::iterator FindInsertIterIndex(float);
     void WriteStep(const float);
 
     bool HasParentLane() const;
-    Lane* GetParentLane() const;
-
-    std::vector<Vehicle*>::iterator FindInsertIterIndex(float);
-    std::vector<Vehicle*> GetVehiclesOnLane() const;
     bool IsOnLane(Vehicle*) const;
+
+    Lane* GetParentLane() const;
+    std::vector<Vehicle*> GetVehiclesOnLane() const;
     int GetNbVehiclesOnLane() const;
     float GetLimitVelocity() const;
     float GetLength() const;

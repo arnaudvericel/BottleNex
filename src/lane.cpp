@@ -44,14 +44,6 @@ Lane::~Lane()
     }
 }
 
-bool Lane::IsOnLane(Vehicle* vehicleToCheck) const
-{
-    for (Vehicle* vehicle : vehicles)
-    {
-        if (vehicle == vehicleToCheck) { return true; }
-    }
-    return false;
-}
 
 void Lane::MoveVehicles(const float& deltaTime)
 {
@@ -77,77 +69,6 @@ void Lane::TransferVehicleToParentLane(Vehicle* vehicleToTransfer)
         UpdateVehiclesLinklist();
         parentLane->UpdateVehiclesLinklist();
     }
-}
-
-std::vector<Vehicle*> Lane::GetVehiclesOnLane() const 
-{ 
-    return vehicles;
-}
-
-int Lane::GetNbVehiclesOnLane() const
-{
-    return vehicles.size();
-}
-
-float Lane::GetVehiclesPerMinute() const
-{
-    return vehiclesPerMinute;
-}
-
-float Lane::GetJunctionPoint() const
-{
-    return junctionPoint;
-}
-
-std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(float crossingPosition)
-{
-    int insertIndex = 0; // we start the search at the very first vehicle on lane (with largest distance on lane)
-    
-    if (vehicles.size() > 0)
-    {
-        if (crossingPosition > vehicles[0]->GetDistanceInLane())
-        {
-            insertIndex = 0;
-        }
-        else if (crossingPosition < vehicles[vehicles.size() - 1]->GetDistanceInLane())
-        {
-            insertIndex = vehicles.size();
-        }
-        else
-        {
-            for (int i=0; i<vehicles.size()-1; i++)
-            {
-                if (vehicles[i]->GetDistanceInLane() > crossingPosition && vehicles[i+1]->GetDistanceInLane() < crossingPosition)
-                {
-                    insertIndex = i + 1;
-                }
-            }
-        }
-    }
-    return vehicles.begin() + insertIndex;
-}
-
-int Lane::FindVehicleIndex(const Vehicle* vehicleToFind)
-{
-    for(std::vector<Vehicle*>::iterator it = begin(vehicles); it != end(vehicles); ++it)
-    {
-        if (*it == vehicleToFind)
-        {
-            return std::distance(vehicles.begin(), it);
-        }
-    }
-}
-
-std::vector<Vehicle*>::iterator Lane::FindVehicleIterIndex(const Vehicle* vehicleToFind)
-{
-    for(std::vector<Vehicle*>::iterator it = begin(vehicles); it != end(vehicles); ++it)
-    {
-        if (*it == vehicleToFind)
-        {
-            return it;
-        }
-    }
-    // todo : throw exception here
 }
 
 void Lane::RemoveVehicle(Vehicle* vehicle)
@@ -188,6 +109,58 @@ void Lane::InsertVehicle(Vehicle* newVehicle, std::vector<Vehicle*>::iterator in
     UpdateVehiclesLinklist();
 }
 
+std::vector<Vehicle*>::iterator Lane::FindInsertIterIndex(float crossingPosition)
+{
+    int insertIndex = 0; // we start the search at the very first vehicle on lane (with largest distance on lane)
+    
+    if (vehicles.size() > 0)
+    {
+        if (crossingPosition > vehicles[0]->GetDistanceInLane())
+        {
+            insertIndex = 0;
+        }
+        else if (crossingPosition < vehicles[vehicles.size() - 1]->GetDistanceInLane())
+        {
+            insertIndex = vehicles.size();
+        }
+        else
+        {
+            for (int i=0; i<vehicles.size()-1; i++)
+            {
+                if (vehicles[i]->GetDistanceInLane() > crossingPosition && vehicles[i+1]->GetDistanceInLane() < crossingPosition)
+                {
+                    insertIndex = i + 1;
+                }
+            }
+        }
+    }
+    return vehicles.begin() + insertIndex;
+}
+
+std::vector<Vehicle*>::iterator Lane::FindVehicleIterIndex(const Vehicle* vehicleToFind)
+{
+    for(std::vector<Vehicle*>::iterator it = begin(vehicles); it != end(vehicles); ++it)
+    {
+        if (*it == vehicleToFind)
+        {
+            return it;
+        }
+    }
+    // todo : throw exception here
+}
+
+int Lane::FindVehicleIndex(const Vehicle* vehicleToFind)
+{
+    for(std::vector<Vehicle*>::iterator it = begin(vehicles); it != end(vehicles); ++it)
+    {
+        if (*it == vehicleToFind)
+        {
+            return std::distance(vehicles.begin(), it);
+        }
+    }
+    // todo : throw exception here
+}
+
 void Lane::UpdateVehiclesLinklist()
 {
     for (int i=0; i<vehicles.size(); i++)
@@ -202,6 +175,45 @@ void Lane::UpdateVehiclesLinklist()
             vehicles[i]->SetForwardVehicle(nullptr);
         }
     }
+}
+
+void Lane::WriteStep(const float time)
+{
+    writer.WriteStep(time);
+}
+
+bool Lane::IsOnLane(Vehicle* vehicleToCheck) const
+{
+    for (Vehicle* vehicle : vehicles)
+    {
+        if (vehicle == vehicleToCheck) { return true; }
+    }
+    return false;
+}
+
+bool Lane::HasParentLane() const
+{
+    return parentLane != nullptr;
+}
+
+std::vector<Vehicle*> Lane::GetVehiclesOnLane() const 
+{ 
+    return vehicles;
+}
+
+int Lane::GetNbVehiclesOnLane() const
+{
+    return vehicles.size();
+}
+
+float Lane::GetVehiclesPerMinute() const
+{
+    return vehiclesPerMinute;
+}
+
+float Lane::GetJunctionPoint() const
+{
+    return junctionPoint;
 }
 
 float Lane::GetLimitVelocity() const 
@@ -230,16 +242,6 @@ float Lane::GetFreeSpaceOnLane() const
     {
         return length;
     }
-}
-
-void Lane::WriteStep(const float time)
-{
-    writer.WriteStep(time);
-}
-
-bool Lane::HasParentLane() const
-{
-    return parentLane != nullptr;
 }
 
 Lane* Lane::GetParentLane() const

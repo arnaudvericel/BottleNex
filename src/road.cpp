@@ -51,27 +51,6 @@ Road::~Road()
     }
 }
 
-bool Road::CanSpawnVehicle(const int laneIndex, Lane* lane)
-{
-    Config* config = Config::GetConfig();
-    int step = (int) (currentTime / deltaTime);
-    return (step % spawnStep[laneIndex] == 0) && (lane->GetFreeSpaceOnLane() > (*config)[Config::FloatSettings::CarSafeDistanceToEnterLaneFactor] * (*config)[Config::FloatSettings::CarLength]);
-}
-
-void Road::SpawnVehicles()
-{
-    int index = 0;
-    for (Lane* lane : lanes)
-    {
-        if (lane != nullptr && CanSpawnVehicle(index, lane))
-        {
-            Vehicle* newVehicle = vehicleFactory->Build(lane, VehicleType::Car);
-            lane->InsertVehicle(newVehicle);
-        }
-        index++;
-    }
-}
-
 void Road::Evolve(bool displayLoadingBar)
 {
     bool isDumpTimeStep = false;
@@ -97,6 +76,27 @@ void Road::Evolve(bool displayLoadingBar)
             DisplayLoadingBar(currentTime / maxTime);
         }
     }
+}
+
+void Road::SpawnVehicles()
+{
+    int index = 0;
+    for (Lane* lane : lanes)
+    {
+        if (lane != nullptr && CanSpawnVehicle(index, lane))
+        {
+            Vehicle* newVehicle = vehicleFactory->Build(lane, VehicleType::Car);
+            lane->InsertVehicle(newVehicle);
+        }
+        index++;
+    }
+}
+
+bool Road::CanSpawnVehicle(const int laneIndex, Lane* lane)
+{
+    Config* config = Config::GetConfig();
+    int step = (int) (currentTime / deltaTime);
+    return (step % spawnStep[laneIndex] == 0) && (lane->GetFreeSpaceOnLane() > (*config)[Config::FloatSettings::CarSafeDistanceToEnterLaneFactor] * (*config)[Config::FloatSettings::CarLength]);
 }
 
 bool Road::IsDumpTimeStep() const

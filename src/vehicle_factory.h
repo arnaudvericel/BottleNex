@@ -17,6 +17,7 @@ public:
     VehicleFactory(int, int);
     ~VehicleFactory() = default;
     Vehicle* Build(Lane*, const VehicleType&);
+    //
     int GetInitVelocityFactorMin() const;
     int GetInitVelocityFactoryMax() const;
 };

@@ -23,7 +23,6 @@ protected:
     float targetVelocity;
     float currentVelocity;
     float distanceInLane;
-
     Motion motionState;
 
     Lane* lane;
@@ -43,23 +42,24 @@ public:
     Vehicle();
     virtual ~Vehicle();
 
+    void Move(const float);
+
+    void SetForwardVehicle(Vehicle*);
+    void SetBackwardVehicle(Vehicle*);
+    void SetLane(Lane*);
+    void SetDistanceInlane(const float);
+
     float GetLength() const;
     float GetCurrentVelocity() const;
     float GetDistanceInLane() const;
     float GetMaxVelocity() const;
     float GetAcceleration() const;
     float GetDeceleration() const;
-    void SetForwardVehicle(Vehicle*);
     Vehicle* GetForwardVehicle() const;
-    void SetBackwardVehicle(Vehicle*);
     Vehicle* GetBackwardVehicle() const;
     int GetId() const;
     Motion GetMotionState() const;
-    void SetLane(Lane*);
     Lane* GetLane() const;
-    void SetDistanceInlane(const float);
-
-    void Move(const float);
 };
 
 #endif

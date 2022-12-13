@@ -14,8 +14,10 @@ private:
 
     Lane* lane;
     std::string fileName;
+
     void SetFilename();
     void DeleteFile();
+    void WriteHeader();
 
     void InitVehiclesStats();
     void FetchVehiclesStats();
@@ -23,9 +25,10 @@ private:
 public:
     Writer();
     ~Writer() = default;
+
     void WriteStep(const float);
-    void WriteHeader();
     void Init(Lane*);
+    
     float GetMeanDensity() const;
     float GetMeanDistance() const;
     float GetMeanVelocity() const;
