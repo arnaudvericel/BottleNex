@@ -23,6 +23,6 @@ cxxtestgen --xunit-printer -w BottleNex --have-eh -o $TEST_DIR/$RUNNER_CPP $TEST
 
 # todo : refactor
 # @compile test runner file
-g++ -std=c++11 -o $EXE_DIR/$RUNNER_EXE -I$CXXTEST $TEST_DIR/$RUNNER_CPP $SRC_DIR/road.cpp $SRC_DIR/lane.cpp $SRC_DIR/car.cpp $SRC_DIR/vehicle.cpp $SRC_DIR/writer.cpp $SRC_DIR/utils.cpp $SRC_DIR/config.cpp $SRC_DIR/vehicle_factory.cpp
+g++ -std=c++11 -o $EXE_DIR/$RUNNER_EXE -I$CXXTEST $TEST_DIR/$RUNNER_CPP $SRC_DIR/road.cpp $SRC_DIR/lane.cpp $SRC_DIR/car.cpp $SRC_DIR/vehicle.cpp $SRC_DIR/writer.cpp $SRC_DIR/utils.cpp $SRC_DIR/config.cpp $SRC_DIR/vehicle_factory.cpp $SRC_DIR/config_reader.cpp
 
 $EXE_DIR/$RUNNER_EXE --help-tests

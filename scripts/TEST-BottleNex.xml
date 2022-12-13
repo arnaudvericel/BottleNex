@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite name="BottleNex" date="Tue Dec 13 11:48:29 2022" tests="19" errors="0" failures="0" time="0" >
+<testsuite name="BottleNex" date="Tue Dec 13 19:47:59 2022" tests="19" errors="0" failures="0" time="0" >
     <testcase classname="TestRoad" name="TestInit" line="31" />
     <testcase classname="TestRoad" name="TestEvolveNoInput" line="45" />
     <testcase classname="TestRoad" name="TestEvolveWithInput" line="77" />
     <testcase classname="TestConfig" name="TestDefault" line="21" />
-    <testcase classname="TestConfig" name="TestSet" line="38" />
-    <testcase classname="TestConfig" name="TestReset" line="55" />
-    <testcase classname="TestConfig" name="TestLoad" line="79">
-        <skipped file="/Users/Arnaud/Documents/Codes.nosync/BottleNex/test_src/test_config.h" line="81" type="skipped" >Test skipped: TODO</skipped>
-        <system-out >
-In TestConfig::TestLoad:
-/Users/Arnaud/Documents/Codes.nosync/BottleNex/test_src/test_config.h:81: Warning: Test skipped: TODO
-s</system-out>
+    <testcase classname="TestConfig" name="TestSet" line="37" />
+    <testcase classname="TestConfig" name="TestReset" line="54" />
+    <testcase classname="TestConfig" name="TestLoad" line="78">
+        <system-out >Found 2 parameters after a SIMULATION directive
+Found 4 parameters after a CAR directive
+Found 1 parameters after a VEHICLE FACTORY directive
+Found 5 parameters after a LANE directive
+.</system-out>
     </testcase>
     <testcase classname="TestVehicleFactory" name="TestDefault" line="55" />
     <testcase classname="TestVehicleFactory" name="TestBuild" line="66" />

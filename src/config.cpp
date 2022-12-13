@@ -99,9 +99,13 @@ Config* Config::GetConfig()
     return instance;
 }
 
-void Config::LoadConfig(const std::string& fileName)
+void Config::LoadConfig(const std::string& fileName, const bool printInfo)
 {
-    std::cout << "Loading Config from file " << fileName << std::endl;
+    if (printInfo)
+    {
+        std::cout << "Loading Config from file " << fileName << std::endl;
+    }
+    
     if (instance != nullptr)
     {
         instance->reader->Read(fileName);
