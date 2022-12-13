@@ -48,6 +48,7 @@ public:
     float GetDistanceInLane() const;
     float GetMaxVelocity() const;
     float GetAcceleration() const;
+    float GetDeceleration() const;
     void SetForwardVehicle(Vehicle*);
     Vehicle* GetForwardVehicle() const;
     void SetBackwardVehicle(Vehicle*);

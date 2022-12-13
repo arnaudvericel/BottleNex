@@ -22,7 +22,6 @@ protected:
     Lane* parentLane;
     float junctionPoint;
 
-    std::vector<Vehicle*>::iterator FindInsertIterIndex(float);
     int FindVehicleIndex(const Vehicle*);
     std::vector<Vehicle*>::iterator FindVehicleIterIndex(const Vehicle*);
     void UpdateVehiclesLinklist();
@@ -42,6 +41,7 @@ public:
     bool HasParentLane() const;
     Lane* GetParentLane() const;
 
+    std::vector<Vehicle*>::iterator FindInsertIterIndex(float);
     std::vector<Vehicle*> GetVehiclesOnLane() const;
     bool IsOnLane(Vehicle*) const;
     int GetNbVehiclesOnLane() const;

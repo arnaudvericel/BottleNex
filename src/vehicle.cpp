@@ -49,6 +49,11 @@ float Vehicle::GetAcceleration() const
     return acceleration;
 }
 
+float Vehicle::GetDeceleration() const 
+{ 
+    return deceleration;
+}
+
 void Vehicle::SetLane(Lane* newLane) 
 {
     lane = newLane;
