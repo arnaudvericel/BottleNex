@@ -18,7 +18,7 @@ The code requires an input files. Examples of such files are in the /input_examp
 
 ---
 
-The code outputs a file for each lane. If the lane is an input lane toward another, its name is appended with the "_parent_X" suffix.
+The code outputs a file for each lane. If the lane is an input lane towards another, its name is appended with the "_parent_X" suffix.
 
 Each file contains the evolution of the traffic on that particular lane:
 
@@ -33,7 +33,7 @@ Each file contains the evolution of the traffic on that particular lane:
 
 ## Installation:
 
-To make the executable "bottlenew", make sure you have the g++ compiler and type:
+To make the executable "bottlenex", make sure you have the g++ compiler and type:
 
 ```
 make all
@@ -42,7 +42,7 @@ in the /build directory.
 
 ---
 
-## Your first bottlenew simulation:
+## Your first bottlenex simulation:
 
 To execute bottlenex, the user needs to provide a command line argument that is the input config. file.
 
@@ -52,7 +52,7 @@ To launch your first bottlenex simulation, go to the `/build/` directory and typ
 ./bottlenex ../input_examples/test.cfg
 ```
 
-which is going to launch the code with the example input config. file provided in /input_examples/.
+which is going to launch the code with the example input configuration file provided in /input_examples/.
 
 ---
 
