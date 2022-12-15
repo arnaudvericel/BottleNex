@@ -59,15 +59,15 @@ void Writer::WriteHeader()
 {
     std::fstream out;
     out.open(fileName, std::ios::out);
-    AddColumn(out, 10, 8, "Time [s]");
-    AddColumn(out, 20, 8, "Nb_Vehicles");
-    AddColumn(out, 20, 8, "Nb_Cars");
-    AddColumn(out, 30, 8, "Mean Velocity [km/h]");
-    AddColumn(out, 30, 8, "Mean Vehicle Spacing [m]");
-    AddColumn(out, 40, 8, "Mean Vehicle Density [unit/100m]");
-    AddColumn(out, 30, 8, "Nb_Vehicles_Cruising");
-    AddColumn(out, 30, 8, "Nb_Vehicles_Accelerating");
-    AddColumn(out, 30, 8, "Nb_Vehicles_Braking");
+    AddColumn(out, 8, 8, "Time [s]");
+    AddColumn(out, 11, 8, "Nb_Vehicles");
+    AddColumn(out, 7, 8, "Nb_Cars");
+    AddColumn(out, 20, 8, "Mean Velocity [km/h]");
+    AddColumn(out, 24, 8, "Mean Vehicle Spacing [m]");
+    AddColumn(out, 32, 8, "Mean Vehicle Density [unit/100m]");
+    AddColumn(out, 20, 8, "Nb_Vehicles_Cruising");
+    AddColumn(out, 24, 8, "Nb_Vehicles_Accelerating");
+    AddColumn(out, 19, 8, "Nb_Vehicles_Braking");
     out << std::endl;
     out.close();
 }
@@ -83,15 +83,15 @@ void Writer::WriteStep(const float time)
 
     std::fstream out;
     out.open(fileName, std::ios::out | std::ios::app);
-    AddColumn(out, 10, 8, time);
-    AddColumn(out, 20, 8, lane->GetNbVehiclesOnLane());
-    AddColumn(out, 20, 8, lane->GetNbVehiclesOnLane());
-    AddColumn(out, 30, 8, GetMeanVelocity() * 3.6);
-    AddColumn(out, 30, 8, GetMeanDistance());
-    AddColumn(out, 40, 8, GetMeanDensity());
-    AddColumn(out, 30, 8, vehiclesCruising);
-    AddColumn(out, 30, 8, vehiclesAccelerating);
-    AddColumn(out, 30, 8, vehiclesBraking);
+    AddColumn(out, 8, 8, time);
+    AddColumn(out, 11, 8, lane->GetNbVehiclesOnLane());
+    AddColumn(out, 7, 8, lane->GetNbVehiclesOnLane());
+    AddColumn(out, 20, 8, GetMeanVelocity() * 3.6);
+    AddColumn(out, 24, 8, GetMeanDistance());
+    AddColumn(out, 32, 8, GetMeanDensity());
+    AddColumn(out, 20, 8, vehiclesCruising);
+    AddColumn(out, 24, 8, vehiclesAccelerating);
+    AddColumn(out, 19, 8, vehiclesBraking);
     out << std::endl;
     out.close();
 }
