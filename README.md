@@ -58,6 +58,7 @@ which is going to launch the code with the example input configuration file prov
 
 ## Command line output examples:
 
+```
 Arnaud@mbp-de-arnaud:~/Documents/Codes.nosync/BottleNex/build
  : ./bottlenex.exe ../input_examples/test.cfg 
 Loading Config from file ../input_examples/test.cfg
@@ -87,6 +88,7 @@ Length [m]          Max Velocity [km/h] Vehicles Per Min    Has Input Lane ?    
 5000                130                 40                  1                   1500                1000                70                            20                            
 
 [====================================================================================================] 100 %
+```
 
 ---
 
