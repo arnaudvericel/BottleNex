@@ -58,7 +58,35 @@ which is going to launch the code with the example input config. file provided i
 
 ## Command line output examples:
 
-TODO
+Arnaud@mbp-de-arnaud:~/Documents/Codes.nosync/BottleNex/build
+ : ./bottlenex.exe ../input_examples/test.cfg 
+Loading Config from file ../input_examples/test.cfg
+*********************
+*** Configuration ***
+*********************
+
+Name                                -> Value     Unit      
+----------------------------------------------------------
+MaxTimeMin                          -> 30        min       
+FactorCFL                           -> 1         /         
+CarLength                           -> 5         m         
+CarAcceleration                     -> 5         m/s^2     
+CarDeceleration                     -> 15        m/s^2     
+CarBrakingDistanceFactor            -> 2.5       /         
+CarAccelerationDistanceFactor       -> 7.5       /         
+CarStartVelocityFactor              -> 0.5       /         
+CarSafeDistanceToEnterLaneFactor    -> 2         /         
+FactoryFactorMin                    -> 60        /         
+FactoryFactorMax                    -> 140       /         
+NbDumps                             -> 500       /         
+
+* Lanes to simulate
+
+** Lane(s) 1 & 2 **
+Length [m]          Max Velocity [km/h] Vehicles Per Min    Has Input Lane ?    Junction Point [m]  Input Length [m]    Input Max Velocity [km/h]     Input Vehicles Per Min        
+5000                130                 40                  1                   1500                1000                70                            20                            
+
+[====================================================================================================] 100 %
 
 ---
 
