@@ -1,11 +1,11 @@
 # BottleNex
 --- 
 
-BottleNex is a tool that simulates traffic evolution on roads, particularly traffic-jams.
+BottleNex is a software that simulates traffic evolution on roads, particularly traffic-jams.
 
-It is modular so that the user can specify the road layout and the vehicles behaviour with an input configuration file.
+It is modular such that the user can specify the road layout, the vehicles behaviour and other simulation parameters with an input configuration file.
 
-The code also has unit tests and passes them all (see. the .xml report file in the /scripts/ repository).
+The code is also unit tested (see. the .xml report file in the /scripts/ repository).
 
 ---
 
